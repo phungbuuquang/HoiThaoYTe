@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:xcademy/screens/home/home_screen.dart';
-import 'package:xcademy/screens/login/custom_tabbar.dart';
+
 import 'package:xcademy/screens/profile/profile_screen.dart';
 
 class BaseTabbarScreen extends StatefulWidget {

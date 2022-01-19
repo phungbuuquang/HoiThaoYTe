@@ -1,12 +1,21 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:xcademy/routes/router_manager.dart';
+import 'package:xcademy/services/di/di.dart';
 
 void main() {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  runZonedGuarded(() async {
+    await DependencyInjection.inject();
+
+    runApp(MyApp());
+  }, (e, stack) {
+    // LogUtils.d(stack);
+  });
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

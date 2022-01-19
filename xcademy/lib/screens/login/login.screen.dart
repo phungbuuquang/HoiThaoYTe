@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:xcademy/routes/router_manager.dart';
-import 'package:xcademy/screens/login/custom_tabbar.dart';
+import 'package:xcademy/screens/login/bloc/login_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -11,6 +12,19 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _isObscure = true;
+  LoginBloc get _bloc => BlocProvider.of(context);
+  final _usernameTextController = TextEditingController();
+  final _passwordTextController = TextEditingController();
+  // bool isLoading = false;
+
+  loginTapped() async {
+    _bloc.login(
+      _usernameTextController.text,
+      _passwordTextController.text,
+    );
+    // Navigator.of(context).pushReplacementNamed(RouterName.base_tabbar);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,10 +34,14 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildLabelWithFormFieldView('Email'),
+            _buildLabelWithFormFieldView(
+              'Email',
+              controller: _usernameTextController,
+            ),
             SizedBox(height: 20),
             _buildLabelWithFormFieldView(
               'Mật khẩu',
+              controller: _passwordTextController,
               isObscure: _isObscure,
               suffixIcon: IconButton(
                 icon: Icon(
@@ -51,27 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(
               height: 17,
             ),
-            InkWell(
-              onTap: () => Navigator.of(context)
-                  .pushReplacementNamed(RouterName.base_tabbar),
-              child: Container(
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Center(
-                  child: Text(
-                    'Đăng nhập',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            _buildLoginBtn(),
             SizedBox(
               height: 50,
             ),
@@ -81,10 +79,47 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  Widget _buildLoginBtn() {
+    return BlocBuilder<LoginBloc, LoginState>(
+      builder: (_, state) {
+        bool isLoading = false;
+        if (state is LoginLoadingState) {
+          isLoading = true;
+        }
+        return InkWell(
+          onTap: isLoading ? null : loginTapped,
+          child: Container(
+            height: 50,
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Center(
+              child: isLoading
+                  ? CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 3,
+                    )
+                  : Text(
+                      'Đăng nhập',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                    ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   Column _buildLabelWithFormFieldView(
     String title, {
     Widget? suffixIcon,
     bool isObscure = false,
+    required TextEditingController controller,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,6 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
         _buildFormField(
           suffixIcon: suffixIcon,
           isObscure: isObscure,
+          controller: controller,
         )
       ],
     );
@@ -105,12 +141,14 @@ class _LoginScreenState extends State<LoginScreen> {
   TextFormField _buildFormField({
     Widget? suffixIcon,
     bool isObscure = false,
+    TextEditingController? controller,
   }) {
     return TextFormField(
       style: TextStyle(
         fontSize: 15,
         color: Colors.black,
       ),
+      controller: controller,
       obscureText: isObscure,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.only(top: 10, left: 10),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:xcademy/screens/detail_tutorial/detail_tutoral_screen.dart';
 import 'package:xcademy/screens/lession/lession_screen.dart';
 import 'package:xcademy/screens/list_notification.dart/list_notification_screen.dart';
+import 'package:xcademy/screens/login/bloc/login_bloc.dart';
 import 'package:xcademy/screens/login/login.screen.dart';
 import 'package:xcademy/screens/tabbar/base_tabbar_screen.dart';
 
@@ -9,7 +11,12 @@ class RouterManager {
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case RouterName.login:
-        return MaterialPageRoute(builder: (_) => LoginScreen());
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => LoginBloc(),
+            child: LoginScreen(),
+          ),
+        );
       case RouterName.base_tabbar:
         return MaterialPageRoute(builder: (_) => BaseTabbarScreen());
       case RouterName.detail_tutorial:

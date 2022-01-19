@@ -31,10 +31,21 @@ dependencies:
   flutter_svg: ^0.21.0
   percent_indicator: ^3.0.1
   video_player: ^2.2.3
+  retrofit: ^3.0.1
+  dio: ^4.0.4
+  json_annotation: ^4.1.0
+  flutter_bloc: ^8.0.1
+  get_it: ^7.2.0
+
+dependency_overrides:
+  meta: ^1.7.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  retrofit_generator: ^3.0.1
+  json_serializable: ^5.0.2
+  build_runner: ^2.1.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
