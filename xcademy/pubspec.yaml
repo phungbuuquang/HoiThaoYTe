@@ -36,6 +36,7 @@ dependencies:
   json_annotation: ^4.1.0
   flutter_bloc: ^8.0.1
   get_it: ^7.2.0
+  shared_preferences: ^2.0.7
 
 dependency_overrides:
   meta: ^1.7.0
@@ -59,6 +60,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/icon/
+    - assets/images/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

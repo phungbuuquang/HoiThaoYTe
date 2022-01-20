@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:xcademy/routes/router_manager.dart';
 import 'package:xcademy/screens/login/bloc/login_bloc.dart';
+import 'package:xcademy/utils/common_utils.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -15,65 +17,97 @@ class _LoginScreenState extends State<LoginScreen> {
   LoginBloc get _bloc => BlocProvider.of(context);
   final _usernameTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
-  // bool isLoading = false;
+  final _formKey = GlobalKey<FormState>();
 
   loginTapped() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
     _bloc.login(
       _usernameTextController.text,
       _passwordTextController.text,
     );
-    // Navigator.of(context).pushReplacementNamed(RouterName.base_tabbar);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildLabelWithFormFieldView(
-              'Email',
-              controller: _usernameTextController,
-            ),
-            SizedBox(height: 20),
-            _buildLabelWithFormFieldView(
-              'Mật khẩu',
-              controller: _passwordTextController,
-              isObscure: _isObscure,
-              suffixIcon: IconButton(
-                icon: Icon(
-                  _isObscure ? Icons.visibility : Icons.visibility_off,
-                  color: Color(0xff646464),
+    return BlocListener<LoginBloc, LoginState>(
+      listener: (_, state) {
+        if (state is LoginFailedState) {
+          CommonUtils.showOkDialog(context, msg: state.error);
+        }
+        if (state is LoginSuccessState) {
+          Navigator.of(context).pushReplacementNamed(RouterName.base_tabbar);
+        }
+      },
+      child: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Form(
+            key: _formKey,
+            child: Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildLabelWithFormFieldView(
+                      'Tên đăng nhập',
+                      controller: _usernameTextController,
+                      validator: (val) {
+                        if (val == null || val.isEmpty) {
+                          return 'Vui lòng nhập tên đăng nhập!';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 20),
+                    _buildLabelWithFormFieldView(
+                      'Mật khẩu',
+                      controller: _passwordTextController,
+                      isObscure: _isObscure,
+                      validator: (val) {
+                        if (val == null || val.isEmpty) {
+                          return 'Vui lòng nhập mật khẩu!';
+                        }
+                        return null;
+                      },
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isObscure ? Icons.visibility : Icons.visibility_off,
+                          color: Color(0xff646464),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isObscure = !_isObscure;
+                          });
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: 17,
+                    ),
+                    Text(
+                      'Bạn đã quên mật khẩu?',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.blue,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 17,
+                    ),
+                    _buildLoginBtn(),
+                    SizedBox(
+                      height: 50,
+                    ),
+                  ],
                 ),
-                onPressed: () {
-                  setState(() {
-                    _isObscure = !_isObscure;
-                  });
-                },
               ),
             ),
-            SizedBox(
-              height: 17,
-            ),
-            Text(
-              'Bạn đã quên mật khẩu?',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: Colors.blue,
-              ),
-            ),
-            SizedBox(
-              height: 17,
-            ),
-            _buildLoginBtn(),
-            SizedBox(
-              height: 50,
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -120,6 +154,7 @@ class _LoginScreenState extends State<LoginScreen> {
     Widget? suffixIcon,
     bool isObscure = false,
     required TextEditingController controller,
+    String? Function(String?)? validator,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,6 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
           suffixIcon: suffixIcon,
           isObscure: isObscure,
           controller: controller,
+          validator: validator,
         )
       ],
     );
@@ -142,6 +178,7 @@ class _LoginScreenState extends State<LoginScreen> {
     Widget? suffixIcon,
     bool isObscure = false,
     TextEditingController? controller,
+    String? Function(String?)? validator,
   }) {
     return TextFormField(
       style: TextStyle(
@@ -150,6 +187,7 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       controller: controller,
       obscureText: isObscure,
+      validator: validator,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.only(top: 10, left: 10),
         suffixIcon: suffixIcon,

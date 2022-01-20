@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 import 'package:xcademy/models/login/login_response.dart';
+import 'package:xcademy/models/seminar/seminar_response.dart';
 
 import 'apis.dart';
 
@@ -14,5 +15,10 @@ abstract class ApiClient {
   Future<LoginResponse?> login(
     @Path('username') String username,
     @Path('password') String password,
+  );
+  @GET('${Apis.list_seminars}?idHoiVien={userId}&idHoiThao={seminarId}')
+  Future<SeminarResponse?> getListSeminars(
+    @Path('userId') String userId,
+    @Path('seminarId') String seminarId,
   );
 }

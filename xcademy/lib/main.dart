@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:xcademy/routes/router_manager.dart';
+import 'package:xcademy/services/data_pref/date_prefs.dart';
 import 'package:xcademy/services/di/di.dart';
 
 void main() {
@@ -16,6 +17,14 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  String get initialRoute {
+    if (injector.get<DataPrefs>().getUserId() != '') {
+      return RouterName.base_tabbar;
+    } else {
+      return RouterName.login;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -30,7 +39,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       onGenerateRoute: RouterManager.generateRoute,
-      initialRoute: RouterName.login,
+      initialRoute: initialRoute,
     );
   }
 }

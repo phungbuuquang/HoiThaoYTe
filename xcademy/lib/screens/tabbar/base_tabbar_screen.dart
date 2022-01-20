@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:xcademy/screens/home/bloc/home_bloc.dart';
 import 'package:xcademy/screens/home/home_screen.dart';
 
 import 'package:xcademy/screens/profile/profile_screen.dart';
@@ -17,7 +19,10 @@ class _BaseTabbarScreenState extends State<BaseTabbarScreen> {
   void initState() {
     super.initState();
     _listScreens = [
-      HomeScreen(),
+      BlocProvider(
+        create: (_) => HomeBloc(),
+        child: HomeScreen(),
+      ),
       Container(
         color: Colors.yellow,
       ),

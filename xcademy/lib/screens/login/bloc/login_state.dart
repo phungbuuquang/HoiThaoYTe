@@ -10,3 +10,8 @@ class LoginFailedState extends LoginState {
   String error;
   LoginFailedState(this.error);
 }
+
+class LoginSuccessState extends LoginState {
+  UserModel user;
+  LoginSuccessState(this.user);
+}
