@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:xcademy/models/subject/subject_model.dart';
 import 'package:xcademy/resources/color_constant.dart';
 import 'package:xcademy/routes/router_manager.dart';
+
+import 'bloc/detail_seminar_bloc.dart';
 
 class ListSubjectScreen extends StatefulWidget {
   const ListSubjectScreen({Key? key}) : super(key: key);
@@ -10,6 +14,16 @@ class ListSubjectScreen extends StatefulWidget {
 }
 
 class _ListSubjectScreenState extends State<ListSubjectScreen> {
+  DetailSeminarBloc get _bloc => BlocProvider.of(context);
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      _bloc.getDetailSeminar();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,19 +32,42 @@ class _ListSubjectScreenState extends State<ListSubjectScreen> {
     );
   }
 
-  ListView _listSubjectView() {
-    return ListView.builder(
-        itemCount: 10,
-        shrinkWrap: true,
-        padding: const EdgeInsets.only(top: 20, bottom: 20),
-        itemBuilder: (_, indext) {
-          return _buildItemView();
-        });
+  Widget _listSubjectView() {
+    return BlocBuilder<DetailSeminarBloc, DetailSeminarState>(
+      builder: (_, state) {
+        bool isLoading = false;
+        List<SubjectModel> listSubjects = [];
+        if (state is DetailSeminarLoadingState) {
+          isLoading = true;
+        } else if (state is DetailSeminarGetSubjectsDoneState) {
+          listSubjects = state.listSubjects;
+        }
+        return isLoading
+            ? Center(
+                child: CircularProgressIndicator(
+                  color: Theme.of(context).primaryColor,
+                  strokeWidth: 3,
+                ),
+              )
+            : ListView.builder(
+                itemCount: listSubjects.length,
+                shrinkWrap: true,
+                padding: const EdgeInsets.only(top: 20, bottom: 20),
+                itemBuilder: (_, index) {
+                  final item = listSubjects[index];
+                  return _buildItemView(item);
+                },
+              );
+      },
+    );
   }
 
-  Widget _buildItemView() {
+  Widget _buildItemView(SubjectModel item) {
     return InkWell(
-      onTap: () => Navigator.of(context).pushNamed(RouterName.lession),
+      onTap: () => Navigator.of(context).pushNamed(
+        RouterName.lession,
+        arguments: item,
+      ),
       child: Container(
         height: 100,
         margin: const EdgeInsets.only(
@@ -66,7 +103,7 @@ class _ListSubjectScreenState extends State<ListSubjectScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Mở đầu khoá học',
+                    item.TieuDe ?? '',
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w500,

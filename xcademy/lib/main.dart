@@ -30,12 +30,26 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primaryColor: Color(0xff4caf50),
+        primaryColor: Color(0xff00c292),
         textTheme: TextTheme(
           subtitle1: TextStyle(
             fontSize: 12,
             color: Color(0xff646464),
           ),
+        ),
+        appBarTheme: AppBarTheme(
+          iconTheme: IconThemeData(
+            color: Colors.white, //change your color here
+          ),
+          backgroundColor: Color(0xff00c292),
+          elevation: 0.8,
+          textTheme: TextTheme(
+            headline6: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 18.0,
+            ),
+          ), //here you can give the text color
         ),
       ),
       onGenerateRoute: RouterManager.generateRoute,

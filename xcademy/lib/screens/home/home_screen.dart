@@ -118,8 +118,8 @@ class _HomeScreenState extends State<HomeScreen> {
         itemBuilder: (_, index) {
           final item = listItems[index];
           return InkWell(
-            onTap: () =>
-                Navigator.of(context).pushNamed(RouterName.detail_tutorial),
+            onTap: () => Navigator.of(context)
+                .pushNamed(RouterName.detail_tutorial, arguments: item),
             child: Container(
               padding: const EdgeInsets.all(15),
               decoration: BoxDecoration(

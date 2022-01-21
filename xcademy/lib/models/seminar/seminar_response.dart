@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:xcademy/models/base/base_response.dart';
+import 'package:xcademy/models/subject/subject_model.dart';
 
 part 'seminar_response.g.dart';
 
@@ -20,6 +21,7 @@ class SeminarModel {
   String? AnhBienLai;
   String? isXacNhanBienLai;
   String? idHoiVien;
+  List<SubjectModel>? DataChuyenDe;
   SeminarModel();
   factory SeminarModel.fromJson(Map<String, dynamic> json) =>
       _$SeminarModelFromJson(json);

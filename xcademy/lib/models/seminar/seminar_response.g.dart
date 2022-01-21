@@ -26,7 +26,10 @@ SeminarModel _$SeminarModelFromJson(Map<String, dynamic> json) => SeminarModel()
   ..AnhHoiThao = json['AnhHoiThao'] as String?
   ..AnhBienLai = json['AnhBienLai'] as String?
   ..isXacNhanBienLai = json['isXacNhanBienLai'] as String?
-  ..idHoiVien = json['idHoiVien'] as String?;
+  ..idHoiVien = json['idHoiVien'] as String?
+  ..DataChuyenDe = (json['DataChuyenDe'] as List<dynamic>?)
+      ?.map((e) => SubjectModel.fromJson(e as Map<String, dynamic>))
+      .toList();
 
 Map<String, dynamic> _$SeminarModelToJson(SeminarModel instance) =>
     <String, dynamic>{
@@ -37,4 +40,5 @@ Map<String, dynamic> _$SeminarModelToJson(SeminarModel instance) =>
       'AnhBienLai': instance.AnhBienLai,
       'isXacNhanBienLai': instance.isXacNhanBienLai,
       'idHoiVien': instance.idHoiVien,
+      'DataChuyenDe': instance.DataChuyenDe,
     };

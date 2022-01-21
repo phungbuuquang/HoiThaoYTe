@@ -2,18 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:xcademy/screens/detail_tutorial/list_subject_screen.dart';
 import 'package:xcademy/widgets/my_tab_view.dart';
 
-class DetailTuTorialScreen extends StatefulWidget {
-  const DetailTuTorialScreen({Key? key}) : super(key: key);
+import 'overview_screen.dart';
+
+class DetailSeminarScreen extends StatefulWidget {
+  const DetailSeminarScreen({Key? key}) : super(key: key);
 
   @override
-  _DetailTuTorialScreenState createState() => _DetailTuTorialScreenState();
+  _DetailSeminarScreenState createState() => _DetailSeminarScreenState();
 }
 
-class _DetailTuTorialScreenState extends State<DetailTuTorialScreen> {
+class _DetailSeminarScreenState extends State<DetailSeminarScreen> {
   final List<String> menuList = [
-    'Môn học',
-    'Thông tin',
-    'Tiến độ',
+    'Tổng quan',
+    'Chuyên đề',
+    'Post-test',
   ];
   List<Widget> _listViews = [];
   int _currentIndex = 0;
@@ -21,10 +23,8 @@ class _DetailTuTorialScreenState extends State<DetailTuTorialScreen> {
   void initState() {
     super.initState();
     _listViews = [
+      OverviewScreen(),
       ListSubjectScreen(),
-      Container(
-        color: Colors.yellow,
-      ),
       Container(
         color: Colors.purple,
       ),
@@ -36,7 +36,7 @@ class _DetailTuTorialScreenState extends State<DetailTuTorialScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Chi tiết khoá học',
+          'Chi tiết hội thảo',
         ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(kToolbarHeight),
