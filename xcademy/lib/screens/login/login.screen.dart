@@ -41,69 +41,74 @@ class _LoginScreenState extends State<LoginScreen> {
           Navigator.of(context).pushReplacementNamed(RouterName.base_tabbar);
         }
       },
-      child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Form(
-            key: _formKey,
-            child: Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildLabelWithFormFieldView(
-                      'Tên đăng nhập',
-                      controller: _usernameTextController,
-                      validator: (val) {
-                        if (val == null || val.isEmpty) {
-                          return 'Vui lòng nhập tên đăng nhập!';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 20),
-                    _buildLabelWithFormFieldView(
-                      'Mật khẩu',
-                      controller: _passwordTextController,
-                      isObscure: _isObscure,
-                      validator: (val) {
-                        if (val == null || val.isEmpty) {
-                          return 'Vui lòng nhập mật khẩu!';
-                        }
-                        return null;
-                      },
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _isObscure ? Icons.visibility : Icons.visibility_off,
-                          color: Color(0xff646464),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _isObscure = !_isObscure;
-                          });
+      child: WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Form(
+              key: _formKey,
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildLabelWithFormFieldView(
+                        'Tên đăng nhập',
+                        controller: _usernameTextController,
+                        validator: (val) {
+                          if (val == null || val.isEmpty) {
+                            return 'Vui lòng nhập tên đăng nhập!';
+                          }
+                          return null;
                         },
                       ),
-                    ),
-                    SizedBox(
-                      height: 17,
-                    ),
-                    Text(
-                      'Bạn đã quên mật khẩu?',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.blue,
+                      SizedBox(height: 20),
+                      _buildLabelWithFormFieldView(
+                        'Mật khẩu',
+                        controller: _passwordTextController,
+                        isObscure: _isObscure,
+                        validator: (val) {
+                          if (val == null || val.isEmpty) {
+                            return 'Vui lòng nhập mật khẩu!';
+                          }
+                          return null;
+                        },
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _isObscure
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Color(0xff646464),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _isObscure = !_isObscure;
+                            });
+                          },
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 17,
-                    ),
-                    _buildLoginBtn(),
-                    SizedBox(
-                      height: 50,
-                    ),
-                  ],
+                      SizedBox(
+                        height: 17,
+                      ),
+                      Text(
+                        'Bạn đã quên mật khẩu?',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.blue,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 17,
+                      ),
+                      _buildLoginBtn(),
+                      SizedBox(
+                        height: 50,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

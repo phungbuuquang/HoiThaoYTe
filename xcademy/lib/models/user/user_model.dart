@@ -17,6 +17,8 @@ class UserModel {
   String? TenDangNhap;
   String? NoiSinh;
   String? NgaySinh;
+  @JsonKey(ignore: true)
+  String? tenTinhThanhCongTac;
 
   UserModel();
   factory UserModel.fromJson(Map<String, dynamic> json) =>

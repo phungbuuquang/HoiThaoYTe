@@ -34,8 +34,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         title: Text('Thông tin cá nhân'),
         actions: [
           IconButton(
-            onPressed: () =>
-                Navigator.of(context).pushNamed(RouterName.edit_profile),
+            onPressed: () {
+              if (_bloc.user == null) {
+                return;
+              }
+              Navigator.of(context).pushNamed(RouterName.edit_profile);
+            },
             icon: Icon(
               Icons.edit,
             ),
@@ -105,6 +109,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         SizedBox(
           height: 24,
         ),
+        _buildInfoLabelView(
+            'Tỉnh thành công tác', user?.tenTinhThanhCongTac ?? ''),
+        SizedBox(
+          height: 24,
+        ),
         Column(
           children: [
             Text(
@@ -121,7 +130,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               placeholder: ImageConstant.placeholder,
               image: user?.AnhBangCap ?? '',
               height: 200,
-              fit: BoxFit.cover,
+              width: double.infinity,
+              fit: BoxFit.fill,
             )
           ],
         ),

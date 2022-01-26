@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:xcademy/routes/router_manager.dart';
+import 'package:xcademy/screens/profile/bloc/profile_bloc.dart';
 import 'package:xcademy/services/data_pref/date_prefs.dart';
 import 'package:xcademy/services/di/di.dart';
 
@@ -12,7 +14,12 @@ void main() {
     initializeDateFormatting();
     await DependencyInjection.inject();
 
-    runApp(MyApp());
+    runApp(
+      BlocProvider(
+        create: (_) => ProfileBloc(),
+        child: MyApp(),
+      ),
+    );
   }, (e, stack) {
     // LogUtils.d(stack);
   });

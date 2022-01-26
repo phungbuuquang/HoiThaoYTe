@@ -15,3 +15,8 @@ class ProfileLoadDoneState extends ProfileState {
   UserModel user;
   ProfileLoadDoneState(this.user);
 }
+
+class ProfileGetNameProvinceState extends ProfileState {
+  String name;
+  ProfileGetNameProvinceState(this.name);
+}

@@ -1,9 +1,13 @@
 import 'package:intl/intl.dart';
 
 class DateUtil {
-  static String strDatetoStr(String dateStr) {
+  static String strDatetoStr(String dateStr,
+      {String format = 'EEEE dd/MM/yyyy'}) {
     final date = DateUtil.stringToDate(dateStr);
-    final DateFormat formatter = DateFormat('EEEE dd/MM/yyyy', 'vi');
+    final DateFormat formatter = DateFormat(
+      format,
+      'vi',
+    );
     return formatter.format(date);
   }
 

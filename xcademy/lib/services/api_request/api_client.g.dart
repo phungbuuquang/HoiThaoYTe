@@ -14,6 +14,42 @@ class _ApiClient implements ApiClient {
   String? baseUrl;
 
   @override
+  Future<UpdateBaseResponse?> updateInfoUser(userId, urls) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>?>(
+        _setStreamType<UpdateBaseResponse>(
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(
+                    _dio.options, 'thongtinhoivien?idHoiVien=${userId}&${urls}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = _result.data == null
+        ? null
+        : UpdateBaseResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ProvinceResponse?> getProvinces() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>?>(
+        _setStreamType<ProvinceResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'gettinhthanh',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value =
+        _result.data == null ? null : ProvinceResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<UserResponse?> getInfoUser(userId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

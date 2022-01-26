@@ -24,56 +24,56 @@ class _BaseTabbarScreenState extends State<BaseTabbarScreen> {
         create: (_) => HomeBloc(),
         child: HomeScreen(),
       ),
-      BlocProvider(
-        create: (_) => ProfileBloc(),
-        child: ProfileScreen(),
-      ),
+      ProfileScreen()
     ];
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Theme.of(context).primaryColor,
-        unselectedLabelStyle: TextStyle(color: Colors.grey),
-        unselectedItemColor: Colors.grey,
-        currentIndex: _currentIndex,
-        onTap: (val) {
-          setState(() {
-            _currentIndex = val;
-          });
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: Theme.of(context).primaryColor,
+          unselectedLabelStyle: TextStyle(color: Colors.grey),
+          unselectedItemColor: Colors.grey,
+          currentIndex: _currentIndex,
+          onTap: (val) {
+            setState(() {
+              _currentIndex = val;
+            });
+          },
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+              ),
+              label: 'Trang chủ',
             ),
-            label: 'Trang chủ',
-          ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(
-          //     Icons.school,
-          //   ),
-          //   label: 'Khoá học',
-          // ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(
-          //     Icons.leaderboard,
-          //   ),
-          //   label: 'Hội thảo',
-          // ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person,
+            // BottomNavigationBarItem(
+            //   icon: Icon(
+            //     Icons.school,
+            //   ),
+            //   label: 'Khoá học',
+            // ),
+            // BottomNavigationBarItem(
+            //   icon: Icon(
+            //     Icons.leaderboard,
+            //   ),
+            //   label: 'Hội thảo',
+            // ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.person,
+              ),
+              label: 'Cá nhân',
             ),
-            label: 'Cá nhân',
-          ),
-        ],
-      ),
-      body: IndexedStack(
-        children: _listScreens,
-        index: _currentIndex,
+          ],
+        ),
+        body: IndexedStack(
+          children: _listScreens,
+          index: _currentIndex,
+        ),
       ),
     );
   }
