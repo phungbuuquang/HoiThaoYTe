@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class CommonUtils {
   static showOkDialog(
@@ -21,6 +22,13 @@ class CommonUtils {
           ],
         );
       },
+    );
+  }
+
+  static Widget circleIndicator(BuildContext context) {
+    return CircularProgressIndicator(
+      color: Theme.of(context).primaryColor,
+      strokeWidth: 3,
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:xcademy/screens/home/bloc/home_bloc.dart';
 import 'package:xcademy/screens/home/home_screen.dart';
+import 'package:xcademy/screens/profile/bloc/profile_bloc.dart';
 
 import 'package:xcademy/screens/profile/profile_screen.dart';
 
@@ -23,13 +24,10 @@ class _BaseTabbarScreenState extends State<BaseTabbarScreen> {
         create: (_) => HomeBloc(),
         child: HomeScreen(),
       ),
-      Container(
-        color: Colors.yellow,
+      BlocProvider(
+        create: (_) => ProfileBloc(),
+        child: ProfileScreen(),
       ),
-      Container(
-        color: Colors.purple,
-      ),
-      ProfileScreen(),
     ];
   }
 
@@ -53,18 +51,18 @@ class _BaseTabbarScreenState extends State<BaseTabbarScreen> {
             ),
             label: 'Trang chủ',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.school,
-            ),
-            label: 'Khoá học',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.leaderboard,
-            ),
-            label: 'Hội thảo',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(
+          //     Icons.school,
+          //   ),
+          //   label: 'Khoá học',
+          // ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(
+          //     Icons.leaderboard,
+          //   ),
+          //   label: 'Hội thảo',
+          // ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.person,

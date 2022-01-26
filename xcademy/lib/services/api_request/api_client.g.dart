@@ -14,6 +14,23 @@ class _ApiClient implements ApiClient {
   String? baseUrl;
 
   @override
+  Future<UserResponse?> getInfoUser(userId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>?>(
+        _setStreamType<UserResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'thongtinhoivien?idHoiVien=${userId}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value =
+        _result.data == null ? null : UserResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<LoginResponse?> login(username, password) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -23,7 +40,7 @@ class _ApiClient implements ApiClient {
         _setStreamType<LoginResponse>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options,
-                    '/dangnhaphoivien?taikhoan=${username}&matkhau=${password}',
+                    'dangnhaphoivien?taikhoan=${username}&matkhau=${password}',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value =

@@ -21,7 +21,12 @@ class SeminarModel {
   String? AnhBienLai;
   String? isXacNhanBienLai;
   String? idHoiVien;
+  String? LoaiHoiThao;
   List<SubjectModel>? DataChuyenDe;
+  String? DiaDiem;
+  String? NgayDienRa;
+  String? ThoiGianBatDau;
+  String? ThoiGianKetThuc;
   SeminarModel();
   factory SeminarModel.fromJson(Map<String, dynamic> json) =>
       _$SeminarModelFromJson(json);

@@ -1,47 +1,38 @@
 import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:video_player/video_player.dart';
 import 'package:xcademy/configurations/configurations.dart';
 import 'package:xcademy/models/subject/subject_model.dart';
+import 'package:xcademy/screens/lession/bloc/subject_bloc.dart';
+import 'package:xcademy/widgets/options_dialog.dart';
+import 'package:xcademy/widgets/video/video_player_widget.dart';
 
 class SubjectScreen extends StatefulWidget {
-  final SubjectModel subject;
-  SubjectScreen(this.subject);
   @override
   _SubjectScreenState createState() => _SubjectScreenState();
 }
 
 class _SubjectScreenState extends State<SubjectScreen> {
   late VideoPlayerController _controller;
-  late SubjectModel _subject;
+
   late PDFDocument doc;
   bool _isLoading = true;
+  SubjectBloc get _bloc => BlocProvider.of(context);
   @override
   void initState() {
     super.initState();
-    _subject = widget.subject;
 
     // final url = Uri.encodeComponent(
-    final url = (Configurations.base_url + (_subject.LinkVideo ?? ''))
-        .replaceAll(' ', '%20');
-    // _controller = VideoPlayerController.network(
-    //     'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4')
-    //   ..initialize().then((_) {
-    //     // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-    //     setState(() {});
-    //   }, onError: (err) {
-    //     print(err);
-    //   });
-
-    _controller = VideoPlayerController.network(
-      url,
-      videoPlayerOptions: VideoPlayerOptions(mixWithOthers: false),
-    );
-
-    _controller.addListener(() {
-      setState(() {});
+    final url = _bloc.getUrl();
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      _bloc.getTotalPdf();
     });
-    _controller.initialize();
+
+    _controller = VideoPlayerController.network(url)
+      ..addListener(() => setState(() {}))
+      ..setLooping(true)
+      ..initialize().then((_) => _controller.play());
   }
 
   @override
@@ -64,7 +55,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
               height: 30,
             ),
             Text(
-              (_subject.TieuDe ?? '').toUpperCase(),
+              (_bloc.subject.TieuDe ?? '').toUpperCase(),
               maxLines: null,
               style: TextStyle(
                 fontSize: 16,
@@ -74,78 +65,125 @@ class _SubjectScreenState extends State<SubjectScreen> {
             SizedBox(
               height: 16,
             ),
-            Container(
-              child: AspectRatio(
-                aspectRatio: 16 / 9,
-                child: Stack(
-                  alignment: Alignment.bottomCenter,
-                  children: <Widget>[
-                    VideoPlayer(_controller),
-                    _ControlsOverlay(controller: _controller),
-                    VideoProgressIndicator(_controller, allowScrubbing: false),
-                  ],
-                ),
-              ),
+            VideoPlayerWidget(
+              controller: _controller,
             ),
             SizedBox(
               height: 16,
             ),
             _buildNamePdfView(),
-            Container(
-              height: 40,
-              width: 200,
-              decoration: BoxDecoration(
-                border: Border.all(),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.chevron_left),
-                  ),
-                  Text('1/3'),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.chevron_right),
-                  )
-                ],
-              ),
+            _buildNumPageView(),
+            SizedBox(
+              height: 30,
             ),
-            Image.network(
-                'http://hoithaoyte.lamphanmem.com/Admin/PDF/ChuyenDe/20-01-2022/De%20thi%20giua%20ky_v6_1.png')
+            _buildPdfView(),
+            SizedBox(
+              height: 30,
+            ),
           ],
         ),
       ),
     );
   }
 
-  Container _buildNamePdfView() {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: Colors.grey),
-        ),
-      ),
-      padding: const EdgeInsets.symmetric(
-        vertical: 10,
-      ),
-      margin: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 10,
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              'De thi giua ki',
-              style: TextStyle(fontSize: 14),
+  Widget _buildPdfView() {
+    return BlocBuilder<SubjectBloc, SubjectState>(
+      buildWhen: (prev, curr) {
+        return curr is SubjectGetUrlPdfState;
+      },
+      builder: (_, state) {
+        if (state is SubjectGetUrlPdfState) {
+          return Image.network(
+            state.url,
+          );
+        }
+        return Container();
+      },
+    );
+  }
+
+  Widget _buildNumPageView() {
+    return BlocBuilder<SubjectBloc, SubjectState>(
+      buildWhen: (prev, curr) {
+        return curr is SubjectGetNumPagePdfState;
+      },
+      builder: (_, state) {
+        return Container(
+          height: 40,
+          width: 200,
+          padding: const EdgeInsets.symmetric(horizontal: 0),
+          decoration: BoxDecoration(
+            border: Border.all(),
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              IconButton(
+                onPressed: () => _bloc.prevPage(),
+                icon: Icon(Icons.chevron_left),
+              ),
+              Text('${_bloc.currentPage + 1}/${_bloc.totalPage}'),
+              IconButton(
+                onPressed: () => _bloc.nextPage(),
+                icon: Icon(Icons.chevron_right),
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildNamePdfView() {
+    return BlocBuilder<SubjectBloc, SubjectState>(
+      buildWhen: (prev, curr) {
+        return curr is SubjectGetNamePdfState;
+      },
+      builder: (_, state) {
+        String name = '';
+        if (state is SubjectGetNamePdfState) {
+          name = state.name;
+        }
+        return GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (_) => OptionsDialog(
+                title: 'Danh sách tài liệu',
+                datas: _bloc.getListNamePdf(),
+                onSelect: (val) => _bloc.onChangePdf(val),
+              ),
+            );
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(color: Colors.grey),
+              ),
+            ),
+            padding: const EdgeInsets.symmetric(
+              vertical: 10,
+            ),
+            margin: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 10,
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    name,
+                    style: TextStyle(fontSize: 14),
+                  ),
+                ),
+                Icon(Icons.arrow_drop_down),
+              ],
             ),
           ),
-          Icon(Icons.arrow_drop_down),
-        ],
-      ),
+        );
+      },
     );
   }
 }

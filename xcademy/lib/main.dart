@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:xcademy/routes/router_manager.dart';
 import 'package:xcademy/services/data_pref/date_prefs.dart';
 import 'package:xcademy/services/di/di.dart';
@@ -8,6 +9,7 @@ import 'package:xcademy/services/di/di.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runZonedGuarded(() async {
+    initializeDateFormatting();
     await DependencyInjection.inject();
 
     runApp(MyApp());

@@ -5,6 +5,18 @@ part 'user_model.g.dart';
 class UserModel {
   String? idHoiVien;
   String? HoTen;
+  String? GioiTinh;
+  String? SoDienThoai;
+  String? Email;
+  String? DiaChi;
+  String? ChucDanh;
+  String? ChuyenNganh;
+  String? NoiLamViec;
+  String? TinhThanhCongTac;
+  String? AnhBangCap;
+  String? TenDangNhap;
+  String? NoiSinh;
+  String? NgaySinh;
 
   UserModel();
   factory UserModel.fromJson(Map<String, dynamic> json) =>

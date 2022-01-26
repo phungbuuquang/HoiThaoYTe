@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:xcademy/resources/assets_constant.dart';
 import 'package:xcademy/screens/detail_tutorial/bloc/detail_seminar_bloc.dart';
+import 'package:xcademy/utils/date_utils.dart';
 
 class OverviewScreen extends StatefulWidget {
   const OverviewScreen({Key? key}) : super(key: key);
@@ -41,6 +42,78 @@ class _OverviewScreenState extends State<OverviewScreen> {
                 height: 200,
                 width: double.infinity,
               ),
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            Row(
+              children: [
+                Text(
+                  'Thời gian diễn ra:',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
+                  ),
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  '${_bloc.seminar.ThoiGianBatDau} - ${_bloc.seminar.ThoiGianKetThuc}',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            Row(
+              children: [
+                Text(
+                  'Ngày:',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
+                  ),
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  DateUtil.strDatetoStr(_bloc.seminar.NgayDienRa ?? ''),
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            Row(
+              children: [
+                Text(
+                  'Địa điểm:',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
+                  ),
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  _bloc.seminar.DiaDiem ?? '',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
             ),
             SizedBox(
               height: 16,
