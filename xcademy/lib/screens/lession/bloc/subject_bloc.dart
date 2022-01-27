@@ -1,6 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:video_player/video_player.dart';
 import 'package:xcademy/configurations/configurations.dart';
 import 'package:xcademy/models/subject/subject_model.dart';
+import 'package:xcademy/services/api_request/api_client.dart';
+import 'package:xcademy/services/data_pref/date_prefs.dart';
+import 'package:xcademy/services/di/di.dart';
 
 part 'subject_state.dart';
 
@@ -12,6 +16,7 @@ class SubjectBloc extends Cubit<SubjectState> {
   int currentPage = 0;
   List<String> listPdf = [];
   int currentPdf = 0;
+  int seconds = 0;
 
   String getUrl() {
     print(Uri.encodeFull(subject.LinkVideo ?? ''));
@@ -69,6 +74,22 @@ class SubjectBloc extends Cubit<SubjectState> {
     }
   }
 
+  Future<void> setTimeCurrentVideo() async {
+    final userId = injector.get<DataPrefs>().getUserId();
+    final res = await injector.get<ApiClient>().setTimeCurrentVideo(
+          userId,
+          subject.idChuyenDe ?? '',
+          seconds.toString(),
+        );
+    print(res);
+  }
+
+  listenTimeCurrent(VideoPlayerController controller) async {
+    final s = await controller.position;
+    print(s?.inSeconds.toString());
+    seconds = s?.inSeconds ?? 0;
+  }
+
   List<String> getListNamePdf() {
     List<String> list = [];
     listPdf.forEach((e) {
@@ -100,6 +121,14 @@ class SubjectBloc extends Cubit<SubjectState> {
         _getNamePdf(),
       ),
     );
+  }
+
+  getTimeCurrentVideo() async {
+    final userId = injector.get<DataPrefs>().getUserId();
+    final res = await injector.get<ApiClient>().getTimeCurrentVideo(
+          userId,
+          subject.idChuyenDe ?? '',
+        );
   }
 
   _getTotalPagePdf() {

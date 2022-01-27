@@ -16,7 +16,23 @@ class ProfileLoadDoneState extends ProfileState {
   ProfileLoadDoneState(this.user);
 }
 
-class ProfileGetNameProvinceState extends ProfileState {
-  String name;
-  ProfileGetNameProvinceState(this.name);
+// class ProfileGetNameProvinceState extends ProfileState {
+//   String name;
+//   ProfileGetNameProvinceState(this.name);
+// }
+
+class ProfileSelectProvinceState extends ProfileState {}
+
+class ProfileSelectDateState extends ProfileState {
+  String date;
+  ProfileSelectDateState(this.date);
+}
+
+class ProfileUpdateDoneState extends ProfileState {
+  String? error;
+  ProfileUpdateDoneState(this.error);
+}
+
+class ProfileSelectImageState extends ProfileState {
+  ProfileSelectImageState();
 }

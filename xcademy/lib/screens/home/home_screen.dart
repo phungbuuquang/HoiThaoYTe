@@ -7,6 +7,7 @@ import 'package:xcademy/resources/assets_constant.dart';
 import 'package:xcademy/resources/color_constant.dart';
 import 'package:xcademy/routes/router_manager.dart';
 import 'package:xcademy/screens/home/bloc/home_bloc.dart';
+import 'package:xcademy/screens/profile/bloc/profile_bloc.dart';
 import 'package:xcademy/utils/date_utils.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -243,14 +244,14 @@ class _HomeScreenState extends State<HomeScreen> {
           // SizedBox(
           //   width: 10,
           // ),
-          BlocBuilder<HomeBloc, HomeState>(
+          BlocBuilder<ProfileBloc, ProfileState>(
             buildWhen: (prev, curr) {
-              return curr is HomeGetNameUserState;
+              return curr is ProfileLoadDoneState;
             },
             builder: (_, state) {
               String name = '';
-              if (state is HomeGetNameUserState) {
-                name = state.name;
+              if (state is ProfileLoadDoneState) {
+                name = state.user.HoTen ?? '';
               }
               return Expanded(
                 child: Text(

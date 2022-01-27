@@ -2,8 +2,6 @@ import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:video_player/video_player.dart';
-import 'package:xcademy/configurations/configurations.dart';
-import 'package:xcademy/models/subject/subject_model.dart';
 import 'package:xcademy/screens/lession/bloc/subject_bloc.dart';
 import 'package:xcademy/widgets/options_dialog.dart';
 import 'package:xcademy/widgets/video/video_player_widget.dart';
@@ -16,8 +14,6 @@ class SubjectScreen extends StatefulWidget {
 class _SubjectScreenState extends State<SubjectScreen> {
   late VideoPlayerController _controller;
 
-  late PDFDocument doc;
-  bool _isLoading = true;
   SubjectBloc get _bloc => BlocProvider.of(context);
   @override
   void initState() {
@@ -27,18 +23,26 @@ class _SubjectScreenState extends State<SubjectScreen> {
     final url = _bloc.getUrl();
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       _bloc.getTotalPdf();
+      _bloc.getTimeCurrentVideo();
     });
 
     _controller = VideoPlayerController.network(url)
-      ..addListener(() => setState(() {}))
+      ..addListener(() {
+        setState(() {});
+        _bloc.listenTimeCurrent(_controller);
+      })
       ..setLooping(true)
-      ..initialize().then((_) => _controller.play());
+      ..initialize().then((_) {
+        // _controller.seekTo(Duration(seconds: 10));
+        _controller.play();
+      });
   }
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
+    _controller.dispose();
+    _bloc.setTimeCurrentVideo();
   }
 
   @override

@@ -14,18 +14,60 @@ class _ApiClient implements ApiClient {
   String? baseUrl;
 
   @override
-  Future<UpdateBaseResponse?> updateInfoUser(userId, urls) async {
+  Future<UpdateBaseResponse?> setTimeCurrentVideo(
+      userId, idSubject, seconds) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>?>(_setStreamType<
+        UpdateBaseResponse>(Options(
+            method: 'POST', headers: _headers, extra: _extra)
+        .compose(_dio.options,
+            'settimecurrentvideo?idHoiVien=${userId}&idChuyenDe=${idSubject}&SoGiay=${seconds}',
+            queryParameters: queryParameters, data: _data)
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = _result.data == null
+        ? null
+        : UpdateBaseResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<TimeCurrentResponse?> getTimeCurrentVideo(userId, idSubject) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>?>(_setStreamType<
+        TimeCurrentResponse>(Options(
+            method: 'GET', headers: _headers, extra: _extra)
+        .compose(_dio.options,
+            'gettimecurrentvideo?idHoiVien=${userId}&idChuyenDe=${idSubject}',
+            queryParameters: queryParameters, data: _data)
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = _result.data == null
+        ? null
+        : TimeCurrentResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<UpdateBaseResponse?> updateInfoUser(userId, urls, data) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>?>(
-        _setStreamType<UpdateBaseResponse>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(
-                    _dio.options, 'thongtinhoivien?idHoiVien=${userId}&${urls}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<UpdateBaseResponse>(Options(
+                method: 'POST',
+                headers: _headers,
+                extra: _extra,
+                contentType: 'multipart/form-data')
+            .compose(_dio.options, 'luutthoivien?idHoiVien=${userId}&${urls}',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data == null
         ? null
         : UpdateBaseResponse.fromJson(_result.data!);

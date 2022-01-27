@@ -46,5 +46,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Ứng dụng muốn bạn cấp quyền truy cập thư viện để thực hiện chức năng này</string>
 </dict>
 </plist>

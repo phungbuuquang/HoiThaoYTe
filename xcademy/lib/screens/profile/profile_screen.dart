@@ -6,6 +6,7 @@ import 'package:xcademy/resources/color_constant.dart';
 import 'package:xcademy/routes/router_manager.dart';
 import 'package:xcademy/screens/profile/bloc/profile_bloc.dart';
 import 'package:xcademy/utils/common_utils.dart';
+import 'package:xcademy/utils/date_utils.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -50,10 +51,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
           child: BlocBuilder<ProfileBloc, ProfileState>(
+            buildWhen: (prev, curr) {
+              return curr is ProfileLoadDoneState;
+            },
             builder: (context, state) {
-              if (state is ProfileLoadingState) {
-                return CommonUtils.circleIndicator(context);
-              }
               if (state is ProfileLoadDoneState) {
                 return _buildListInfoView(state.user);
               }
@@ -67,45 +68,65 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Column _buildListInfoView(UserModel? user) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildInfoLabelView('Họ tên', user?.HoTen ?? ''),
         SizedBox(
           height: 24,
         ),
-        _buildInfoLabelView('Số điện thoại', user?.SoDienThoai ?? ''),
+        _buildInfoLabelView('Số điện thoại',
+            user?.SoDienThoai == 'null' ? '' : user?.SoDienThoai ?? ''),
         SizedBox(
           height: 24,
         ),
-        _buildInfoLabelView('Email', user?.Email ?? ''),
+        _buildInfoLabelView(
+            'Email', user?.Email == 'null' ? '' : user?.Email ?? ''),
         SizedBox(
           height: 24,
         ),
-        _buildInfoLabelView('Địa chỉ', user?.DiaChi ?? ''),
+        _buildInfoLabelView(
+            'Địa chỉ', user?.DiaChi == 'null' ? '' : user?.DiaChi ?? ''),
         SizedBox(
           height: 24,
         ),
-        _buildInfoLabelView('Giới tính', user?.GioiTinh ?? ''),
+        _buildInfoLabelView(
+            'Giới tính', user?.GioiTinh == 'null' ? '' : user?.GioiTinh ?? ''),
         SizedBox(
           height: 24,
         ),
-        _buildInfoLabelView('Ngày sinh', user?.NgaySinh ?? ''),
+        _buildInfoLabelView(
+          'Ngày sinh',
+          user?.NgaySinh == 'null'
+              ? ''
+              : DateUtil.strDatetoStr(
+                  user?.NgaySinh ?? '',
+                  format: 'dd/MM/yyyy',
+                ),
+        ),
         SizedBox(
           height: 24,
         ),
-        _buildInfoLabelView('Nơi sinh', user?.NoiSinh ?? ''),
+        _buildInfoLabelView(
+          'Nơi sinh',
+          user?.NoiSinh == 'null' ? '' : user?.NoiSinh ?? '',
+        ),
         SizedBox(
           height: 24,
         ),
-        _buildInfoLabelView('Chuyên ngành', user?.ChuyenNganh ?? ''),
+        _buildInfoLabelView('Chuyên ngành',
+            user?.ChuyenNganh == 'null' ? '' : user?.ChuyenNganh ?? ''),
         SizedBox(
           height: 24,
         ),
-        _buildInfoLabelView('Nơi làm việc', user?.NoiLamViec ?? ''),
+        _buildInfoLabelView('Nơi làm việc',
+            user?.NoiLamViec == 'null' ? '' : user?.NoiLamViec ?? ''),
         SizedBox(
           height: 24,
         ),
-        _buildInfoLabelView('Chức danh', user?.ChucDanh ?? ''),
+        _buildInfoLabelView(
+          'Chức danh',
+          user?.ChucDanh == 'null' ? '' : user?.ChucDanh ?? '',
+        ),
         SizedBox(
           height: 24,
         ),
@@ -115,6 +136,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           height: 24,
         ),
         Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Ảnh bằng cấp',
@@ -126,13 +148,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
             SizedBox(
               height: 16,
             ),
-            FadeInImage.assetNetwork(
-              placeholder: ImageConstant.placeholder,
-              image: user?.AnhBangCap ?? '',
-              height: 200,
-              width: double.infinity,
-              fit: BoxFit.fill,
-            )
+            user == null || user.AnhBangCap == '' || user.AnhBangCap == 'null'
+                ? Text('Chưa cập nhật')
+                : FadeInImage.assetNetwork(
+                    placeholder: ImageConstant.placeholder,
+                    image: user.AnhBangCap ?? '',
+                    height: 200,
+                    width: double.infinity,
+                    fit: BoxFit.fill,
+                  )
           ],
         ),
         SizedBox(
@@ -143,21 +167,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Container _buildLogoutBtn() {
-    return Container(
-      height: 40,
-      width: 180,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(25),
-        color: Colors.grey,
-      ),
-      child: Center(
-        child: Text(
-          'Đăng xuất',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
+  Widget _buildLogoutBtn() {
+    return Center(
+      child: Container(
+        height: 40,
+        width: 180,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(25),
+          color: Colors.grey,
+        ),
+        child: Center(
+          child: Text(
+            'Đăng xuất',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
       ),
