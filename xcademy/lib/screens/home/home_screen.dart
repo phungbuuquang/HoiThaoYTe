@@ -265,11 +265,11 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             },
           ),
-          InkWell(
-            onTap: () =>
-                Navigator.of(context).pushNamed(RouterName.list_notification),
-            child: SvgPicture.asset(IconConstant.bell),
-          )
+          // InkWell(
+          //   onTap: () =>
+          //       Navigator.of(context).pushNamed(RouterName.list_notification),
+          //   child: SvgPicture.asset(IconConstant.bell),
+          // )
         ],
       ),
     );
