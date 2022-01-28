@@ -5,6 +5,8 @@ import 'package:xcademy/resources/assets_constant.dart';
 import 'package:xcademy/resources/color_constant.dart';
 import 'package:xcademy/routes/router_manager.dart';
 import 'package:xcademy/screens/profile/bloc/profile_bloc.dart';
+import 'package:xcademy/services/data_pref/date_prefs.dart';
+import 'package:xcademy/services/di/di.dart';
 import 'package:xcademy/utils/common_utils.dart';
 import 'package:xcademy/utils/date_utils.dart';
 
@@ -167,22 +169,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  logout() async {
+    await injector.get<DataPrefs>().clear();
+    Navigator.of(context).pushNamedAndRemoveUntil(
+      RouterName.login,
+      (route) => false,
+    );
+  }
+
   Widget _buildLogoutBtn() {
     return Center(
-      child: Container(
-        height: 40,
-        width: 180,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(25),
-          color: Colors.grey,
-        ),
-        child: Center(
-          child: Text(
-            'Đăng xuất',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
+      child: InkWell(
+        onTap: logout,
+        child: Container(
+          height: 40,
+          width: 180,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(25),
+            color: Colors.grey,
+          ),
+          child: Center(
+            child: Text(
+              'Đăng xuất',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ),

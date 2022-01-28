@@ -10,3 +10,5 @@ class DetailSeminarGetSubjectsDoneState extends DetailSeminarState {
   List<SubjectModel> listSubjects = [];
   DetailSeminarGetSubjectsDoneState(this.listSubjects);
 }
+
+class DetailSeminarUpdatePaidState extends DetailSeminarState {}

@@ -17,6 +17,14 @@ part 'api_client.g.dart';
 abstract class ApiClient {
   factory ApiClient(Dio dio, {String baseUrl}) = _ApiClient;
 
+  @POST('${Apis.update_image_bill}?idHoiVien={userId}&idHoiThao={idSeminar}')
+  @MultiPart()
+  Future<UpdateBaseResponse?> updateImageBill(
+    @Path("userId") String userId,
+    @Path("idSeminar") String idSeminar,
+    @Body() FormData formData,
+  );
+
   @POST(
       '${Apis.set_time_current_video}?idHoiVien={userId}&idChuyenDe={idSubject}&SoGiay={seconds}')
   Future<UpdateBaseResponse?> setTimeCurrentVideo(
@@ -35,7 +43,7 @@ abstract class ApiClient {
   Future<UpdateBaseResponse?> updateInfoUser(
     @Path("userId") String userId,
     @Path("urls") String urls,
-    @Path('fileimg') File? data,
+    @Body() FormData? formData,
   );
 
   @GET('${Apis.provinces}')

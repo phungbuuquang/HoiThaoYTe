@@ -15,7 +15,6 @@ class _DetailSeminarScreenState extends State<DetailSeminarScreen> {
   final List<String> menuList = [
     'Tổng quan',
     'Chuyên đề',
-    'Post-test',
   ];
   List<Widget> _listViews = [];
   int _currentIndex = 0;
@@ -25,9 +24,6 @@ class _DetailSeminarScreenState extends State<DetailSeminarScreen> {
     _listViews = [
       OverviewScreen(),
       ListSubjectScreen(),
-      Container(
-        color: Colors.purple,
-      ),
     ];
   }
 

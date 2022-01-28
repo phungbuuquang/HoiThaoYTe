@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:xcademy/resources/assets_constant.dart';
 import 'package:xcademy/screens/detail_tutorial/bloc/detail_seminar_bloc.dart';
+import 'package:xcademy/screens/detail_tutorial/image_bill_dialog.dart';
 import 'package:xcademy/utils/date_utils.dart';
 
 class OverviewScreen extends StatefulWidget {
@@ -164,45 +165,67 @@ class _OverviewScreenState extends State<OverviewScreen> {
     );
   }
 
-  Container _buildPaidView() {
-    return Container(
-      height: 50,
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(5),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            offset: Offset(0, 1),
-            blurRadius: 2,
+  Widget _buildPaidView() {
+    return BlocBuilder<DetailSeminarBloc, DetailSeminarState>(
+        builder: (_, state) {
+      return InkWell(
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (context) => ImageBillDialog(_bloc.seminar),
+          ).then((value) {
+            if (value != null) {
+              _bloc.updateStatusBill();
+            }
+          });
+        },
+        child: Container(
+          height: 50,
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(5),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                offset: Offset(0, 1),
+                blurRadius: 2,
+              ),
+            ],
           ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            _bloc.seminar.isXacNhanBienLai == 'True'
-                ? 'Đã có biên lai đóng phí'
-                : 'Chưa có biên lai đóng phí',
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 16,
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                _bloc.seminar.CoPhi == 'False'
+                    ? 'Miễn phí'
+                    : _bloc.seminar.AnhBienLai != ''
+                        ? 'Đã có biên lai đóng phí'
+                        : 'Chưa có biên lai đóng phí',
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                ),
+              ),
+              _bloc.seminar.CoPhi == 'False'
+                  ? Icon(
+                      Icons.check,
+                      color: Colors.green,
+                    )
+                  : _bloc.seminar.AnhBienLai != ''
+                      ? Icon(
+                          Icons.check,
+                          color: Colors.green,
+                        )
+                      : Icon(
+                          Icons.report,
+                          color: Colors.orange,
+                        )
+            ],
           ),
-          _bloc.seminar.isXacNhanBienLai == 'True'
-              ? Icon(
-                  Icons.check,
-                  color: Colors.green,
-                )
-              : Icon(
-                  Icons.report,
-                  color: Colors.orange,
-                )
-        ],
-      ),
-    );
+        ),
+      );
+    });
   }
 }

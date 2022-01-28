@@ -34,7 +34,8 @@ SeminarModel _$SeminarModelFromJson(Map<String, dynamic> json) => SeminarModel()
   ..DiaDiem = json['DiaDiem'] as String?
   ..NgayDienRa = json['NgayDienRa'] as String?
   ..ThoiGianBatDau = json['ThoiGianBatDau'] as String?
-  ..ThoiGianKetThuc = json['ThoiGianKetThuc'] as String?;
+  ..ThoiGianKetThuc = json['ThoiGianKetThuc'] as String?
+  ..CoPhi = json['CoPhi'] as String?;
 
 Map<String, dynamic> _$SeminarModelToJson(SeminarModel instance) =>
     <String, dynamic>{
@@ -51,4 +52,5 @@ Map<String, dynamic> _$SeminarModelToJson(SeminarModel instance) =>
       'NgayDienRa': instance.NgayDienRa,
       'ThoiGianBatDau': instance.ThoiGianBatDau,
       'ThoiGianKetThuc': instance.ThoiGianKetThuc,
+      'CoPhi': instance.CoPhi,
     };

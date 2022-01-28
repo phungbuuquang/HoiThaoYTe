@@ -23,26 +23,41 @@ class _SubjectScreenState extends State<SubjectScreen> {
     final url = _bloc.getUrl();
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       _bloc.getTotalPdf();
-      _bloc.getTimeCurrentVideo();
     });
 
     _controller = VideoPlayerController.network(url)
       ..addListener(() {
         setState(() {});
-        _bloc.listenTimeCurrent(_controller);
+        if (_controller.value.isInitialized) {
+          _bloc.listenTimeCurrent(_controller);
+        }
       })
       ..setLooping(true)
       ..initialize().then((_) {
-        // _controller.seekTo(Duration(seconds: 10));
-        _controller.play();
+        _playVideo();
       });
+  }
+
+  _playVideo() async {
+    await _bloc.getTimeCurrentVideo();
+    _controller.seekTo(
+      Duration(
+        seconds: _bloc.seconds,
+      ),
+    );
+    _controller.play();
   }
 
   @override
   void dispose() {
     super.dispose();
     _controller.dispose();
+  }
+
+  @override
+  void deactivate() {
     _bloc.setTimeCurrentVideo();
+    super.deactivate();
   }
 
   @override

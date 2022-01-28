@@ -10,7 +10,7 @@ part 'detail_seminar_state.dart';
 class DetailSeminarBloc extends Cubit<DetailSeminarState> {
   DetailSeminarBloc(this.seminar) : super(DetailSeminarInitialState());
 
-  final SeminarModel seminar;
+  SeminarModel seminar;
 
   getDetailSeminar() async {
     emit(DetailSeminarLoadingState());
@@ -23,5 +23,17 @@ class DetailSeminarBloc extends Cubit<DetailSeminarState> {
     emit(DetailSeminarGetSubjectsDoneState(
       res?.data?.first.DataChuyenDe ?? [],
     ));
+  }
+
+  updateStatusBill() async {
+    final userId = injector.get<DataPrefs>().getUserId();
+    final res = await injector.get<ApiClient>().getListSeminars(
+          userId,
+          seminar.idHoiThao ?? '',
+        );
+    if (res != null && res.data != null) {
+      seminar = res.data!.first;
+      emit(DetailSeminarUpdatePaidState());
+    }
   }
 }

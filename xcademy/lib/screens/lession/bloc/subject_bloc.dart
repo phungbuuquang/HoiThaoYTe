@@ -129,6 +129,12 @@ class SubjectBloc extends Cubit<SubjectState> {
           userId,
           subject.idChuyenDe ?? '',
         );
+    if (res != null && res.data != null) {
+      var val = int.tryParse(res.data!.SoGiay ?? '');
+      if (val != null) {
+        seconds = val;
+      }
+    }
   }
 
   _getTotalPagePdf() {

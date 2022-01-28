@@ -19,4 +19,8 @@ class DataPrefs {
   String getUserName() {
     return shared.getString('user_name') ?? '';
   }
+
+  clear() async {
+    await shared.clear();
+  }
 }

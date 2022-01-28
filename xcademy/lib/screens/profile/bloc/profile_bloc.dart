@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,6 +11,8 @@ import 'package:xcademy/services/api_request/api_client.dart';
 import 'package:xcademy/services/data_pref/date_prefs.dart';
 import 'package:xcademy/services/di/di.dart';
 import 'package:xcademy/utils/date_utils.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:mime/mime.dart';
 
 part 'profile_state.dart';
 
@@ -122,15 +125,26 @@ class ProfileBloc extends Cubit<ProfileState> {
       urls += 'ChucDanh=$title&';
     }
     if (imageSelected != null) {
-      urls += 'AnhBangCap=${_getFileName()}.png&';
+      urls += 'AnhBangCap=${_getFileName()}&';
     }
     if (province != null && province?.idTinhThanh != user?.TinhThanhCongTac) {
       urls += 'TinhThanhCongTac=${province?.idTinhThanh}&';
     }
+    FormData? form;
+    if (imageSelected != null) {
+      form = FormData.fromMap({
+        'fileimg': MultipartFile.fromFileSync(
+          imageSelected?.path ?? '',
+          contentType:
+              MediaType.parse(lookupMimeType(imageSelected?.path ?? '') ?? ''),
+        ),
+      });
+    }
+
     final res = await injector.get<ApiClient>().updateInfoUser(
           userId,
           urls,
-          imageSelected,
+          form,
         );
     print(res);
     if (res != null && res.data?.first != null) {
