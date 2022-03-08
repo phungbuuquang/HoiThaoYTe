@@ -142,14 +142,20 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(5),
-                  child: FadeInImage.assetNetwork(
-                    image: item.AnhHoiThao ?? '',
-                    placeholder: ImageConstant.placeholder,
-                    fit: BoxFit.cover,
-                    fadeInDuration: Duration(milliseconds: 200),
-                    width: 80,
-                    height: 80,
-                  ),
+                  child: item.AnhHoiThao == null || item.AnhHoiThao == ''
+                      ? Image.asset(
+                          ImageConstant.placeholder,
+                          width: 80,
+                          height: 80,
+                        )
+                      : FadeInImage.assetNetwork(
+                          image: item.AnhHoiThao ?? '',
+                          placeholder: ImageConstant.placeholder,
+                          fit: BoxFit.cover,
+                          fadeInDuration: Duration(milliseconds: 200),
+                          width: 80,
+                          height: 80,
+                        ),
                 ),
                 SizedBox(
                   width: 10,
