@@ -27,7 +27,10 @@ class SubjectBloc extends Cubit<SubjectState> {
   }
 
   getTotalPdf() {
-    final arr = subject.LinkPDF?.split('|~~|') ?? [];
+    List<String> arr = [];
+    if (subject.LinkPDF != '' && subject.LinkPDF != null) {
+      arr = subject.LinkPDF?.split('|~~|') ?? [];
+    }
     print(arr);
     listPdf = arr;
     _getTotalPagePdf();

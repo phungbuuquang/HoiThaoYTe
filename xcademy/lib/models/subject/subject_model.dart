@@ -11,6 +11,7 @@ class SubjectModel {
   String? LinkPDF;
   String? SoImageConvertToPDF;
   String? ThoiLuongVideo;
+  String? TongThoiGianXem;
   SubjectModel();
   factory SubjectModel.fromJson(Map<String, dynamic> json) =>
       _$SubjectModelFromJson(json);

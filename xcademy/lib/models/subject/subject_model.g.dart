@@ -14,7 +14,8 @@ SubjectModel _$SubjectModelFromJson(Map<String, dynamic> json) => SubjectModel()
   ..TimeVideoCurrent = json['TimeVideoCurrent'] as String?
   ..LinkPDF = json['LinkPDF'] as String?
   ..SoImageConvertToPDF = json['SoImageConvertToPDF'] as String?
-  ..ThoiLuongVideo = json['ThoiLuongVideo'] as String?;
+  ..ThoiLuongVideo = json['ThoiLuongVideo'] as String?
+  ..TongThoiGianXem = json['TongThoiGianXem'] as String?;
 
 Map<String, dynamic> _$SubjectModelToJson(SubjectModel instance) =>
     <String, dynamic>{
@@ -26,4 +27,5 @@ Map<String, dynamic> _$SubjectModelToJson(SubjectModel instance) =>
       'LinkPDF': instance.LinkPDF,
       'SoImageConvertToPDF': instance.SoImageConvertToPDF,
       'ThoiLuongVideo': instance.ThoiLuongVideo,
+      'TongThoiGianXem': instance.TongThoiGianXem,
     };

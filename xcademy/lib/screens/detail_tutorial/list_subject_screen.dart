@@ -19,9 +19,6 @@ class _ListSubjectScreenState extends State<ListSubjectScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      _bloc.getDetailSeminar();
-    });
   }
 
   @override
@@ -94,47 +91,51 @@ class _ListSubjectScreenState extends State<ListSubjectScreen> {
             SizedBox(
               width: 5,
             ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 8,
-                bottom: 8,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item.TieuDe ?? '',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: 8,
+                  bottom: 8,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      item.TieuDe ?? '',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  RichText(
-                    text: TextSpan(
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: 'Trạng thái: ',
-                          style: TextStyle(
-                            color: ColorConstant.subtitleColor,
-                            fontSize: 12,
-                          ),
-                        ),
-                        TextSpan(
-                          text: 'Chưa hoàn thành',
-                          style: TextStyle(
-                            color: Colors.orange,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
+                    SizedBox(
+                      height: 8,
                     ),
-                  ),
-                ],
+                    RichText(
+                      text: TextSpan(
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'Trạng thái: ',
+                            style: TextStyle(
+                              color: ColorConstant.subtitleColor,
+                              fontSize: 12,
+                            ),
+                          ),
+                          TextSpan(
+                            text: 'Chưa hoàn thành',
+                            style: TextStyle(
+                              color: Colors.orange,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             )
           ],

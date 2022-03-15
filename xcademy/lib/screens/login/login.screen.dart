@@ -92,17 +92,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(
                         height: 17,
                       ),
-                      Text(
-                        'Bạn đã quên mật khẩu?',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.blue,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 17,
-                      ),
                       _buildLoginBtn(),
                       SizedBox(
                         height: 50,

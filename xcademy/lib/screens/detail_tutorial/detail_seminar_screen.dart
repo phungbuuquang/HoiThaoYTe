@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:xcademy/screens/detail_tutorial/bloc/detail_seminar_bloc.dart';
 import 'package:xcademy/screens/detail_tutorial/list_subject_screen.dart';
 import 'package:xcademy/widgets/my_tab_view.dart';
 
@@ -18,13 +20,18 @@ class _DetailSeminarScreenState extends State<DetailSeminarScreen> {
   ];
   List<Widget> _listViews = [];
   int _currentIndex = 0;
+  DetailSeminarBloc get _bloc => BlocProvider.of(context);
   @override
   void initState() {
     super.initState();
+
     _listViews = [
       OverviewScreen(),
       ListSubjectScreen(),
     ];
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      _bloc.getDetailSeminar();
+    });
   }
 
   @override

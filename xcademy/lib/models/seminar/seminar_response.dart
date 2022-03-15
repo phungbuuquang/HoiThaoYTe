@@ -18,6 +18,7 @@ class SeminarModel {
   String? idLoaiHoiThao;
   String? TieuDe;
   String? AnhHoiThao;
+  String? AnhBia;
   String? AnhBienLai;
   String? isXacNhanBienLai;
   String? idHoiVien;

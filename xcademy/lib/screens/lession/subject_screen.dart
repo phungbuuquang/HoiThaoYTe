@@ -21,6 +21,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
 
     // final url = Uri.encodeComponent(
     final url = _bloc.getUrl();
+    print(url);
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       _bloc.getTotalPdf();
     });
@@ -73,12 +74,15 @@ class _SubjectScreenState extends State<SubjectScreen> {
             SizedBox(
               height: 30,
             ),
-            Text(
-              (_bloc.subject.TieuDe ?? '').toUpperCase(),
-              maxLines: null,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                (_bloc.subject.TieuDe ?? '').toUpperCase(),
+                maxLines: null,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
             SizedBox(
@@ -142,7 +146,9 @@ class _SubjectScreenState extends State<SubjectScreen> {
                 onPressed: () => _bloc.prevPage(),
                 icon: Icon(Icons.chevron_left),
               ),
-              Text('${_bloc.currentPage + 1}/${_bloc.totalPage}'),
+              Text(_bloc.totalPage == 0
+                  ? '0/0'
+                  : '${_bloc.currentPage + 1}/${_bloc.totalPage}'),
               IconButton(
                 onPressed: () => _bloc.nextPage(),
                 icon: Icon(Icons.chevron_right),
@@ -164,14 +170,19 @@ class _SubjectScreenState extends State<SubjectScreen> {
         if (state is SubjectGetNamePdfState) {
           name = state.name;
         }
+
         return GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {
+            final datas = _bloc.getListNamePdf();
+            if (datas.isEmpty) {
+              return;
+            }
             showDialog(
               context: context,
               builder: (_) => OptionsDialog(
                 title: 'Danh sách tài liệu',
-                datas: _bloc.getListNamePdf(),
+                datas: datas,
                 onSelect: (val) => _bloc.onChangePdf(val),
               ),
             );
