@@ -22,6 +22,12 @@ class HomeBloc extends Cubit<HomeState> {
 
   getNameUser() {
     final name = injector.get<DataPrefs>().getUserName();
-    emit(HomeGetNameUserState(name));
+    final avatar = injector.get<DataPrefs>().getAvatar();
+    emit(
+      HomeGetNameUserState(
+        name: name,
+        avatar: avatar,
+      ),
+    );
   }
 }

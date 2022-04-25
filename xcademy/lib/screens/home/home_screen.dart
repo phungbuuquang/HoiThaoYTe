@@ -238,30 +238,38 @@ class _HomeScreenState extends State<HomeScreen> {
       height: 64,
       width: double.infinity,
       padding: const EdgeInsets.only(left: 20, right: 15),
-      child: Row(
-        children: [
-          // ClipRRect(
-          //   borderRadius: BorderRadius.circular(20),
-          //   child: Image.network(
-          //     'https://media.vov.vn/sites/default/files/styles/large/public/2021-01/d5_khyjueaavq7h_1.jpg',
-          //     fit: BoxFit.cover,
-          //     width: 40,
-          //     height: 40,
-          //   ),
-          // ),
-          // SizedBox(
-          //   width: 10,
-          // ),
-          BlocBuilder<ProfileBloc, ProfileState>(
-            buildWhen: (prev, curr) {
-              return curr is ProfileLoadDoneState;
-            },
-            builder: (_, state) {
-              String name = '';
-              if (state is ProfileLoadDoneState) {
-                name = state.user.HoTen ?? '';
-              }
-              return Expanded(
+      child: BlocBuilder<ProfileBloc, ProfileState>(
+        buildWhen: (prev, curr) {
+          return curr is ProfileLoadDoneState;
+        },
+        builder: (_, state) {
+          String name = '';
+          String? avatar;
+          if (state is ProfileLoadDoneState) {
+            name = state.user.HoTen ?? '';
+            avatar = state.user.AnhCaNhan;
+          }
+          return Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: avatar != null && avatar != ''
+                    ? Image.network(
+                        avatar,
+                        fit: BoxFit.cover,
+                        width: 40,
+                        height: 40,
+                      )
+                    : Image.asset(
+                        ImageConstant.human,
+                        width: 40,
+                        height: 40,
+                      ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Expanded(
                 child: Text(
                   name,
                   style: TextStyle(
@@ -270,15 +278,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-              );
-            },
-          ),
-          // InkWell(
-          //   onTap: () =>
-          //       Navigator.of(context).pushNamed(RouterName.list_notification),
-          //   child: SvgPicture.asset(IconConstant.bell),
-          // )
-        ],
+              ),
+            ],
+          );
+        },
       ),
     );
   }

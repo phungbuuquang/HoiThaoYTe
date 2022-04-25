@@ -287,52 +287,97 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       },
       builder: (_, state) {
         return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Ảnh bằng cấp',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: _pickImage,
-                  child: Text(
-                    'Chọn ảnh',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.blue,
-                    ),
-                  ),
-                ),
-              ],
+            _buildInfoImgView(
+              'Ảnh bằng tốt nghiệp chuyên khoa',
+              imgPicked: _bloc.imageTNCK,
+              imgUrl: _bloc.user?.AnhBangCap,
+              uploadPressed: _pickImage,
             ),
             SizedBox(
-              height: 16,
+              height: 15,
             ),
-            _bloc.imageSelected != null
-                ? Image.file(
-                    _bloc.imageSelected!,
-                    height: 200,
-                    width: double.infinity,
-                    fit: BoxFit.fill,
-                  )
-                : _bloc.user?.AnhBangCap == ''
-                    ? Text('Chưa cập nhật')
-                    : FadeInImage.assetNetwork(
-                        placeholder: ImageConstant.placeholder,
-                        image: _bloc.user?.AnhBangCap ?? '',
-                        height: 200,
-                        width: double.infinity,
-                        fit: BoxFit.fill,
-                      ),
+            _buildInfoImgView(
+              'Ảnh thẻ hội viên',
+              imgPicked: _bloc.imageTHV,
+              imgUrl: _bloc.user?.AnhTheHoiVien,
+              uploadPressed: _pickImage,
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            _buildInfoImgView(
+              'Ảnh chứng chỉ hành nghề',
+              imgPicked: _bloc.imageCCHN,
+              imgUrl: _bloc.user?.AnhChungChiHanhNghe,
+              uploadPressed: _pickImage,
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            _buildInfoImgView(
+              'Ảnh văn bằng cao nhất',
+              imgPicked: _bloc.imageVBCN,
+              imgUrl: _bloc.user?.AnhVanBangCaoNhat,
+              uploadPressed: _pickImage,
+            ),
           ],
         );
       },
+    );
+  }
+
+  Column _buildInfoImgView(
+    String title, {
+    File? imgPicked,
+    String? imgUrl,
+    Function()? uploadPressed,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black,
+              ),
+            ),
+            GestureDetector(
+              onTap: uploadPressed,
+              child: Text(
+                'Chọn ảnh',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.blue,
+                ),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 16,
+        ),
+        imgPicked != null
+            ? Image.file(
+                imgPicked,
+                height: 200,
+                width: double.infinity,
+                fit: BoxFit.fill,
+              )
+            : imgUrl == ''
+                ? Text('Chưa cập nhật')
+                : FadeInImage.assetNetwork(
+                    placeholder: ImageConstant.placeholder,
+                    image: imgUrl ?? '',
+                    height: 200,
+                    width: double.infinity,
+                    fit: BoxFit.fill,
+                  ),
+      ],
     );
   }
 

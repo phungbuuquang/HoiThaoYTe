@@ -17,6 +17,10 @@ class UserModel {
   String? TenDangNhap;
   String? NoiSinh;
   String? NgaySinh;
+  String? AnhCaNhan;
+  String? AnhTheHoiVien;
+  String? AnhChungChiHanhNghe;
+  String? AnhVanBangCaoNhat;
   @JsonKey(ignore: true)
   String? tenTinhThanhCongTac;
 

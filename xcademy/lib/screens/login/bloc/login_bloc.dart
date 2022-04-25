@@ -27,6 +27,7 @@ class LoginBloc extends Cubit<LoginState> {
     }
     injector.get<DataPrefs>().saveUserId(res.data!.first.idHoiVien ?? '');
     injector.get<DataPrefs>().saveUserName(res.data!.first.HoTen ?? '');
+    injector.get<DataPrefs>().saveAvatar(res.data!.first.AnhCaNhan ?? '');
     emit(LoginSuccessState(res.data!.first));
   }
 }

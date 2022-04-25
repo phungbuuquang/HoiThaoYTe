@@ -12,6 +12,10 @@ class HomeGetSeminarsDoneState extends HomeState {
 }
 
 class HomeGetNameUserState extends HomeState {
-  String name;
-  HomeGetNameUserState(this.name);
+  String? name;
+  String? avatar;
+  HomeGetNameUserState({
+    this.name,
+    this.avatar,
+  });
 }

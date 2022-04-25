@@ -20,6 +20,14 @@ class DataPrefs {
     return shared.getString('user_name') ?? '';
   }
 
+  Future<bool> saveAvatar(String avtar) async {
+    return shared.setString('avtar', avtar);
+  }
+
+  String getAvatar() {
+    return shared.getString('avtar') ?? '';
+  }
+
   clear() async {
     await shared.clear();
   }

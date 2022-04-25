@@ -22,7 +22,11 @@ class ProfileBloc extends Cubit<ProfileState> {
   List<ProvinceModel> listProvinces = [];
   ProvinceModel? province;
   DateTime? birthday;
-  File? imageSelected;
+  File? imageTNCK;
+  File? imageAvt;
+  File? imageTHV;
+  File? imageCCHN;
+  File? imageVBCN;
   getInfoUser() async {
     emit(ProfileLoadingState());
     final userId = injector.get<DataPrefs>().getUserId();
@@ -39,7 +43,7 @@ class ProfileBloc extends Cubit<ProfileState> {
 
   resetData() {
     birthday = null;
-    imageSelected = null;
+    imageTNCK = null;
   }
 
   selectDate(DateTime date) {
@@ -52,7 +56,7 @@ class ProfileBloc extends Cubit<ProfileState> {
   }
 
   selectImage(XFile image) {
-    imageSelected = File(image.path);
+    imageTNCK = File(image.path);
     emit(
       ProfileSelectImageState(),
     );
@@ -124,19 +128,19 @@ class ProfileBloc extends Cubit<ProfileState> {
     if (title != user?.ChucDanh && title != null) {
       urls += 'ChucDanh=$title&';
     }
-    if (imageSelected != null) {
+    if (imageTNCK != null) {
       urls += 'AnhBangCap=${_getFileName()}&';
     }
     if (province != null && province?.idTinhThanh != user?.TinhThanhCongTac) {
       urls += 'TinhThanhCongTac=${province?.idTinhThanh}&';
     }
     FormData? form;
-    if (imageSelected != null) {
+    if (imageTNCK != null) {
       form = FormData.fromMap({
         'fileimg': MultipartFile.fromFileSync(
-          imageSelected?.path ?? '',
+          imageTNCK?.path ?? '',
           contentType:
-              MediaType.parse(lookupMimeType(imageSelected?.path ?? '') ?? ''),
+              MediaType.parse(lookupMimeType(imageTNCK?.path ?? '') ?? ''),
         ),
       });
     }
