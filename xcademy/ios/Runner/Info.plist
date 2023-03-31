@@ -48,5 +48,7 @@
 	<false/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Ứng dụng muốn bạn cấp quyền truy cập thư viện để thực hiện chức năng này</string>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 </dict>
 </plist>
