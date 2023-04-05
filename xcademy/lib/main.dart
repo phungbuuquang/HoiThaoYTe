@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:xcademy/resources/color_constant.dart';
 import 'package:xcademy/routes/router_manager.dart';
 import 'package:xcademy/screens/profile/bloc/profile_bloc.dart';
 import 'package:xcademy/services/data_pref/date_prefs.dart';
@@ -40,7 +41,8 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: Color(0xff00c292),
+        fontFamily: 'Inter',
+        primaryColor: ColorConstant.primaryColor,
         textTheme: TextTheme(
           subtitle1: TextStyle(
             fontSize: 12,
@@ -51,7 +53,7 @@ class MyApp extends StatelessWidget {
           iconTheme: IconThemeData(
             color: Colors.white, //change your color here
           ),
-          backgroundColor: Color(0xff00c292),
+          backgroundColor: ColorConstant.primaryColor,
           elevation: 0.8,
           textTheme: TextTheme(
             headline6: TextStyle(
