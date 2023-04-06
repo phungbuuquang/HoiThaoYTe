@@ -5,6 +5,9 @@ import 'package:xcademy/resources/color_constant.dart';
 import 'package:xcademy/routes/router_manager.dart';
 import 'package:xcademy/screens/login/bloc/login_bloc.dart';
 import 'package:xcademy/utils/common_utils.dart';
+import 'package:xcademy/widgets/my_button.dart';
+import 'package:xcademy/widgets/my_image.dart';
+import 'package:xcademy/widgets/my_text_formfield.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -48,13 +51,34 @@ class _LoginScreenState extends State<LoginScreen> {
           body: Stack(
             children: [
               Container(
+                width: double.infinity,
+                height: double.infinity,
                 decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                  colors: [
-                    Theme.of(context).primaryColor,
-                    ColorConstant.subPrimary,
+                  gradient: LinearGradient(
+                    colors: [
+                      Theme.of(context).primaryColor,
+                      ColorConstant.subPrimary,
+                    ],
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      child: Center(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(60),
+                          child: MyImage(
+                            'logo_demo.png',
+                            width: 120,
+                            height: 120,
+                            isSvg: false,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
-                )),
+                ),
               ),
               Container(
                 margin: EdgeInsets.only(
@@ -74,10 +98,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        _buildLabelWithFormFieldView(
-                          'Tên đăng nhập',
+                        MyTextFormField(
+                          labelText: 'Tên đăng nhập',
                           controller: _usernameTextController,
                           validator: (val) {
                             if (val == null || val.isEmpty) {
@@ -87,8 +111,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                         ),
                         SizedBox(height: 20),
-                        _buildLabelWithFormFieldView(
-                          'Mật khẩu',
+                        MyTextFormField(
+                          labelText: 'Mật khẩu',
                           controller: _passwordTextController,
                           isObscure: _isObscure,
                           validator: (val) {
@@ -116,7 +140,32 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         _buildLoginBtn(),
                         SizedBox(
-                          height: 50,
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Bạn chưa có tài khoản ?',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: ColorConstant.text,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            InkWell(
+                              child: Text(
+                                'Đăng ký mới',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: ColorConstant.subPrimary,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -137,96 +186,12 @@ class _LoginScreenState extends State<LoginScreen> {
         if (state is LoginLoadingState) {
           isLoading = true;
         }
-        return InkWell(
-          onTap: isLoading ? null : loginTapped,
-          child: Container(
-            height: 50,
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: Center(
-              child: isLoading
-                  ? CircularProgressIndicator(
-                      color: Colors.white,
-                      strokeWidth: 3,
-                    )
-                  : Text(
-                      'Đăng nhập',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                      ),
-                    ),
-            ),
-          ),
+        return MyButton(
+          isLoading: isLoading,
+          onTap: loginTapped,
+          title: 'Đăng nhập',
         );
       },
-    );
-  }
-
-  Column _buildLabelWithFormFieldView(
-    String title, {
-    Widget? suffixIcon,
-    bool isObscure = false,
-    required TextEditingController controller,
-    String? Function(String?)? validator,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: Theme.of(context).textTheme.subtitle1,
-        ),
-        SizedBox(height: 3),
-        _buildFormField(
-          suffixIcon: suffixIcon,
-          isObscure: isObscure,
-          controller: controller,
-          validator: validator,
-        )
-      ],
-    );
-  }
-
-  TextFormField _buildFormField({
-    Widget? suffixIcon,
-    bool isObscure = false,
-    TextEditingController? controller,
-    String? Function(String?)? validator,
-  }) {
-    return TextFormField(
-      style: TextStyle(
-        fontSize: 15,
-        color: Colors.black,
-      ),
-      controller: controller,
-      obscureText: isObscure,
-      validator: validator,
-      decoration: InputDecoration(
-        contentPadding: const EdgeInsets.only(top: 10, left: 10),
-        suffixIcon: suffixIcon,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5),
-          borderSide: BorderSide(
-            color: Color(0xffD8DFEA),
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5),
-          borderSide: BorderSide(
-            color: Color(0xffD8DFEA),
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5),
-          borderSide: BorderSide(
-            color: Color(0xffD8DFEA),
-          ),
-        ),
-      ),
     );
   }
 }

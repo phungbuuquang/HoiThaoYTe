@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:xcademy/models/seminar/seminar_response.dart';
 import 'package:xcademy/resources/assets_constant.dart';
 import 'package:xcademy/resources/color_constant.dart';
@@ -9,6 +7,7 @@ import 'package:xcademy/routes/router_manager.dart';
 import 'package:xcademy/screens/home/bloc/home_bloc.dart';
 import 'package:xcademy/screens/profile/bloc/profile_bloc.dart';
 import 'package:xcademy/utils/date_utils.dart';
+import 'package:xcademy/widgets/my_image.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -22,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _bloc.getNameUser();
       _bloc.getListSeminar();
     });
@@ -37,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: Colors.white,
           body: Column(
             children: [
-              _buildNavbarView(),
+              // _buildNavbarView(),
               SizedBox(
                 height: 17,
               ),
@@ -58,67 +57,68 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildTutorialView() {
-    return BlocBuilder<HomeBloc, HomeState>(
-      buildWhen: (prev, curr) {
-        return curr is HomeLoadingState || curr is HomeGetSeminarsDoneState;
-      },
-      builder: (_, state) {
-        bool isLoading = false;
-        List<SeminarModel> listItems = [];
-        if (state is HomeLoadingState) {
-          isLoading = true;
-        } else if (state is HomeGetSeminarsDoneState) {
-          listItems = state.listSeminars;
-        }
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 15, right: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Danh sách hội thảo',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                  // Text(
-                  //   'Xem thêm',
-                  //   style: TextStyle(
-                  //     fontSize: 12,
-                  //     fontWeight: FontWeight.w500,
-                  //     color: Theme.of(context).primaryColor,
-                  //   ),
-                  // ),
-                ],
-              ),
-            ),
-            isLoading
-                ? Center(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 3,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  )
-                : _buildListTutorialView(listItems)
-          ],
-        );
-      },
-    );
+    return _buildListTutorialView([]);
+    // BlocBuilder<HomeBloc, HomeState>(
+    //   buildWhen: (prev, curr) {
+    //     return curr is HomeLoadingState || curr is HomeGetSeminarsDoneState;
+    //   },
+    //   builder: (_, state) {
+    //     bool isLoading = false;
+    //     List<SeminarModel> listItems = [];
+    //     if (state is HomeLoadingState) {
+    //       isLoading = true;
+    //     } else if (state is HomeGetSeminarsDoneState) {
+    //       listItems = state.listSeminars;
+    //     }
+    //     return Column(
+    //       crossAxisAlignment: CrossAxisAlignment.start,
+    //       children: [
+    //         Padding(
+    //           padding: const EdgeInsets.only(left: 15, right: 15),
+    //           child: Row(
+    //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //             children: [
+    //               Text(
+    //                 'Danh sách hội thảo',
+    //                 style: TextStyle(
+    //                   fontSize: 14,
+    //                   fontWeight: FontWeight.w500,
+    //                   color: Theme.of(context).primaryColor,
+    //                 ),
+    //               ),
+    //               // Text(
+    //               //   'Xem thêm',
+    //               //   style: TextStyle(
+    //               //     fontSize: 12,
+    //               //     fontWeight: FontWeight.w500,
+    //               //     color: Theme.of(context).primaryColor,
+    //               //   ),
+    //               // ),
+    //             ],
+    //           ),
+    //         ),
+    //         isLoading
+    //             ? Center(
+    //                 child: CircularProgressIndicator(
+    //                   strokeWidth: 3,
+    //                   color: Theme.of(context).primaryColor,
+    //                 ),
+    //               )
+    //             : _buildListTutorialView(listItems)
+    //       ],
+    //     );
+    //   },
+    // );
   }
 
   ListView _buildListTutorialView(List<SeminarModel> listItems) {
     return ListView.builder(
-      itemCount: listItems.length,
+      itemCount: 10, //listItems.length,
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.only(top: 15),
       itemBuilder: (_, index) {
-        final item = listItems[index];
+        final item = SeminarModel(); //listItems[index];
         return _buildItemView(item);
       },
     );
@@ -143,10 +143,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(5),
                   child: item.AnhBia == null || item.AnhBia == ''
-                      ? Image.asset(
+                      ? MyImage(
                           ImageConstant.placeholder,
                           width: 80,
                           height: 80,
+                          isSvg: false,
                         )
                       : FadeInImage.assetNetwork(
                           image: item.AnhHoiThao ?? '',
