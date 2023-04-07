@@ -25,5 +25,6 @@ class DependencyInjection {
         baseUrl: Configurations.base_api_url,
       ),
     );
+    DataPrefsConstant.userId = injector.get<DataPrefs>().getUserId();
   }
 }

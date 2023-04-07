@@ -6,7 +6,7 @@ import 'package:xcademy/routes/router_manager.dart';
 import 'package:xcademy/screens/login/bloc/login_bloc.dart';
 import 'package:xcademy/utils/common_utils.dart';
 import 'package:xcademy/widgets/my_button.dart';
-import 'package:xcademy/widgets/my_cache_image.dart';
+import 'package:xcademy/widgets/my_image.dart';
 import 'package:xcademy/widgets/my_text_formfield.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -70,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Center(
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(60),
-                        child: MyCacheImage(
+                        child: MyImage(
                           'logo_demo.png',
                           width: 120,
                           height: 120,

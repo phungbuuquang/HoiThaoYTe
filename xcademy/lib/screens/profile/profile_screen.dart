@@ -86,20 +86,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            height: 100,
-            width: 100,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(50),
-              child: Image.network(
-                user?.AnhCaNhan ?? '',
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
+          // Container(
+          //   height: 100,
+          //   width: 100,
+          //   decoration: BoxDecoration(
+          //     borderRadius: BorderRadius.circular(50),
+          //   ),
+          //   child: ClipRRect(
+          //     borderRadius: BorderRadius.circular(50),
+          //     child: Image.network(
+          //       user?.AnhCaNhan ?? '',
+          //       fit: BoxFit.cover,
+          //     ),
+          //   ),
+          // ),
           _buildInfoLabelView('Họ tên', user?.HoTen ?? ''),
           SizedBox(
             height: 24,

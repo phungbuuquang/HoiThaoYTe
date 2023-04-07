@@ -5,8 +5,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:xcademy/resources/assets_constant.dart';
 import 'package:xcademy/resources/color_constant.dart';
 
-class MyCacheImage extends StatelessWidget {
-  const MyCacheImage(
+class MyImage extends StatelessWidget {
+  const MyImage(
     this.imgUrl, {
     Key? key,
     this.fit,
@@ -28,57 +28,29 @@ class MyCacheImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (imgUrl.startsWith(IconsType.htttps.supportType())) {
-      return CachedNetworkImage(
-        imageBuilder: (context, imageProvider) => isCircle
-            ? Container(
-                width: size,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: imageProvider,
-                    fit: fit,
-                  ),
-                ),
-              )
-            : Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: imageProvider,
-                    fit: fit,
-                  ),
-                ),
-              ),
-        fit: fit,
-        imageUrl: imgUrl,
-        color: color,
+    if (imgUrl.startsWith(IconsType.htttps.supportType()) ||
+        imgUrl.startsWith(IconsType.http.supportType())) {
+      return Image.network(
+        imgUrl,
+        loadingBuilder: (BuildContext context, Widget child,
+            ImageChunkEvent? loadingProgress) {
+          if (loadingProgress == null) return child;
+          return Center(
+              child: CircularProgressIndicator(
+            color: Theme.of(context).primaryColor,
+            backgroundColor: ColorConstant.grayf5,
+          ));
+        },
+        errorBuilder:
+            (BuildContext context, Object exception, StackTrace? stackTrace) {
+          return Image.asset(
+            'assets/${AssetsFolder.images.getFolder()}/img_loading_error.png',
+            fit: BoxFit.cover,
+          );
+        },
+        fit: BoxFit.cover,
         width: width,
         height: height,
-        placeholder: (context, url) => Container(
-          height: height ,
-          child: Center(
-              child: CircularProgressIndicator(color: ColorConstant.primaryColor)),
-        ),
-        errorWidget: (context, url, error) => isCircle
-            ? Container(
-                width: width,
-                height: height,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: ExactAssetImage(
-                        'assets/${AssetsFolder.images.getFolder()}/img_loading_error.png'),
-                    fit: fit,
-                  ),
-                ),
-              )
-            : Image.asset(
-                'assets/${AssetsFolder.images.getFolder()}/img_loading_error.png',
-                fit: fit,
-                height: height,
-                width: width,
-              ),
-        cacheManager: CustomCacheManager.instance,
       );
     } else if (imgUrl.endsWith(IconsType.svg.supportType())) {
       return SvgPicture.asset(
@@ -107,7 +79,12 @@ class MyCacheImage extends StatelessWidget {
   }
 }
 
-enum IconsType { svg, png, htttps }
+enum IconsType {
+  svg,
+  png,
+  htttps,
+  http,
+}
 
 extension IconsTypeExt on IconsType {
   String supportType() {
@@ -118,6 +95,8 @@ extension IconsTypeExt on IconsType {
         return 'png';
       case IconsType.htttps:
         return 'https';
+      case IconsType.http:
+        return 'http';
     }
   }
 }

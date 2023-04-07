@@ -29,7 +29,7 @@ class _DetailSeminarScreenState extends State<DetailSeminarScreen> {
       OverviewScreen(),
       ListSubjectScreen(),
     ];
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _bloc.getDetailSeminar();
     });
   }

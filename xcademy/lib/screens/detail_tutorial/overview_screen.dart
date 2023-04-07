@@ -5,6 +5,7 @@ import 'package:xcademy/resources/assets_constant.dart';
 import 'package:xcademy/screens/detail_tutorial/bloc/detail_seminar_bloc.dart';
 import 'package:xcademy/screens/detail_tutorial/image_bill_dialog.dart';
 import 'package:xcademy/utils/date_utils.dart';
+import 'package:xcademy/widgets/my_image.dart';
 
 class OverviewScreen extends StatefulWidget {
   const OverviewScreen({Key? key}) : super(key: key);
@@ -42,11 +43,9 @@ class _OverviewScreenState extends State<OverviewScreen> {
               ),
               ClipRRect(
                 borderRadius: BorderRadius.circular(5),
-                child: FadeInImage.assetNetwork(
-                  image: _bloc.seminar.AnhHoiThao ?? '',
-                  placeholder: ImageConstant.placeholder,
+                child: MyImage(
+                  _bloc.seminar.AnhBia ?? '',
                   fit: BoxFit.cover,
-                  fadeInDuration: Duration(milliseconds: 200),
                   height: 200,
                   width: double.infinity,
                 ),

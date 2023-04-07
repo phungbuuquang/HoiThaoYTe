@@ -11,7 +11,7 @@ import 'package:xcademy/services/data_pref/date_prefs.dart';
 import 'package:xcademy/services/di/di.dart';
 import 'package:xcademy/utils/common_utils.dart';
 import 'package:xcademy/utils/date_utils.dart';
-import 'package:xcademy/widgets/my_cache_image.dart';
+import 'package:xcademy/widgets/my_image.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -73,8 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildMyTutorialView() {
-    final userId = injector.get<DataPrefs>().getUserId();
-    return userId == ''
+    return DataPrefsConstant.userId == ''
         ? SizedBox.shrink()
         : Padding(
             padding: const EdgeInsets.only(left: 16),
@@ -200,12 +199,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   ListView _buildListTutorialView(List<SeminarModel> listItems) {
     return ListView.builder(
-      itemCount: 10, //listItems.length,
+      itemCount: listItems.isEmpty ? 10 : listItems.length,
       shrinkWrap: true,
       scrollDirection: Axis.horizontal,
       // padding: const EdgeInsets.only(top: 15),
       itemBuilder: (_, index) {
-        final item = SeminarModel(); //listItems[index];
+        final item = listItems.isEmpty ? SeminarModel() : listItems[index];
         return _buildItemView(item);
       },
     );
@@ -213,11 +212,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   InkWell _buildItemView(SeminarModel item) {
     return InkWell(
-      onTap: () => CommonUtils.showConfirmDialog(context,
-          msg: 'Vui lòng đăng nhập để xem được hội thảo',
-          okAction: () => Navigator.of(context).pushNamed(RouterName.login)),
-      // () => Navigator.of(context)
-      //     .pushNamed(RouterName.detail_tutorial, arguments: item),
+      onTap: () => DataPrefsConstant.userId == ''
+          ? CommonUtils.showConfirmDialog(context,
+              msg: 'Vui lòng đăng nhập để xem được hội thảo',
+              okAction: () => Navigator.of(context).pushNamed(RouterName.login))
+          : Navigator.of(context)
+              .pushNamed(RouterName.detail_tutorial, arguments: item),
       child: Container(
         width: 200,
         margin: const EdgeInsets.only(right: 16),
@@ -239,9 +239,11 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: MyCacheImage(
+                child: MyImage(
                   'https://cybershow.vn/wp-content/uploads/2020/02/company-trip-prudential-80-640x480.jpg',
                   fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: double.infinity,
                 ),
               ),
               Expanded(

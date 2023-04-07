@@ -32,3 +32,7 @@ class DataPrefs {
     await shared.clear();
   }
 }
+
+class DataPrefsConstant {
+  static String userId = '';
+}
