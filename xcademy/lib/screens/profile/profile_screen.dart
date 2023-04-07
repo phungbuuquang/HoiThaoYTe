@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:xcademy/models/user/user_model.dart';
+import 'package:xcademy/resources/app_textstyle.dart';
 import 'package:xcademy/resources/assets_constant.dart';
 import 'package:xcademy/resources/color_constant.dart';
 import 'package:xcademy/routes/router_manager.dart';
@@ -9,6 +10,7 @@ import 'package:xcademy/services/data_pref/date_prefs.dart';
 import 'package:xcademy/services/di/di.dart';
 import 'package:xcademy/utils/common_utils.dart';
 import 'package:xcademy/utils/date_utils.dart';
+import 'package:xcademy/widgets/my_button.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -23,7 +25,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _bloc.getInfoUser();
     });
   }
@@ -35,33 +37,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text('Thông tin cá nhân'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              if (_bloc.user == null) {
-                return;
-              }
-              Navigator.of(context).pushNamed(RouterName.edit_profile);
-            },
-            icon: Icon(
-              Icons.edit,
+        actions: injector.get<DataPrefs>().getUserId() == ''
+            ? null
+            : [
+                IconButton(
+                  onPressed: () {
+                    if (_bloc.user == null) {
+                      return;
+                    }
+                    Navigator.of(context).pushNamed(RouterName.edit_profile);
+                  },
+                  icon: Icon(
+                    Icons.edit,
+                  ),
+                )
+              ],
+      ),
+      body: injector.get<DataPrefs>().getUserId() == ''
+          ? Center(
+              child: MyButton(
+                title: 'Đăng nhập',
+                width: 200,
+                onTap: () => Navigator.of(context).pushNamed(RouterName.login),
+              ),
+            )
+          : SingleChildScrollView(
+              child: BlocBuilder<ProfileBloc, ProfileState>(
+                buildWhen: (prev, curr) {
+                  return curr is ProfileLoadDoneState;
+                },
+                builder: (context, state) {
+                  if (state is ProfileLoadDoneState) {
+                    return _buildListInfoView(state.user);
+                  }
+                  return _buildListInfoView(null);
+                },
+              ),
             ),
-          )
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: BlocBuilder<ProfileBloc, ProfileState>(
-          buildWhen: (prev, curr) {
-            return curr is ProfileLoadDoneState;
-          },
-          builder: (context, state) {
-            if (state is ProfileLoadDoneState) {
-              return _buildListInfoView(state.user);
-            }
-            return _buildListInfoView(null);
-          },
-        ),
-      ),
     );
   }
 

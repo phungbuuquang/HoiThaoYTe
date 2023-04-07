@@ -6,7 +6,7 @@ import 'package:xcademy/routes/router_manager.dart';
 import 'package:xcademy/screens/login/bloc/login_bloc.dart';
 import 'package:xcademy/utils/common_utils.dart';
 import 'package:xcademy/widgets/my_button.dart';
-import 'package:xcademy/widgets/my_image.dart';
+import 'package:xcademy/widgets/my_cache_image.dart';
 import 'package:xcademy/widgets/my_text_formfield.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -45,135 +45,135 @@ class _LoginScreenState extends State<LoginScreen> {
           Navigator.of(context).pushReplacementNamed(RouterName.base_tabbar);
         }
       },
-      child: WillPopScope(
-        onWillPop: () async => false,
-        child: Scaffold(
-          body: Stack(
-            children: [
-              Container(
-                width: double.infinity,
-                height: double.infinity,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Theme.of(context).primaryColor,
-                      ColorConstant.subPrimary,
-                    ],
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.3,
-                      child: Center(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(60),
-                          child: MyImage(
-                            'logo_demo.png',
-                            width: 120,
-                            height: 120,
-                            isSvg: false,
-                          ),
-                        ),
-                      ),
-                    ),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Đăng nhập'),
+          elevation: 0,
+        ),
+        body: Stack(
+          children: [
+            Container(
+              width: double.infinity,
+              height: double.infinity,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Theme.of(context).primaryColor,
+                    ColorConstant.subPrimary,
                   ],
                 ),
               ),
-              Container(
-                margin: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.3),
-                height: double.infinity,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(25),
-                    topRight: Radius.circular(25),
+              child: Column(
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    child: Center(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(60),
+                        child: MyCacheImage(
+                          'logo_demo.png',
+                          width: 120,
+                          height: 120,
+                          folder: AssetsFolder.images,
+                        ),
+                      ),
+                    ),
                   ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.3),
+              height: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(25),
+                  topRight: Radius.circular(25),
                 ),
-                child: Form(
-                  key: _formKey,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        MyTextFormField(
-                          labelText: 'Tên đăng nhập',
-                          controller: _usernameTextController,
-                          validator: (val) {
-                            if (val == null || val.isEmpty) {
-                              return 'Vui lòng nhập tên đăng nhập!';
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 20),
-                        MyTextFormField(
-                          labelText: 'Mật khẩu',
-                          controller: _passwordTextController,
-                          isObscure: _isObscure,
-                          validator: (val) {
-                            if (val == null || val.isEmpty) {
-                              return 'Vui lòng nhập mật khẩu!';
-                            }
-                            return null;
-                          },
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _isObscure
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              color: Color(0xff646464),
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _isObscure = !_isObscure;
-                              });
-                            },
+              ),
+              child: Form(
+                key: _formKey,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      MyTextFormField(
+                        labelText: 'Tên đăng nhập',
+                        controller: _usernameTextController,
+                        validator: (val) {
+                          if (val == null || val.isEmpty) {
+                            return 'Vui lòng nhập tên đăng nhập!';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 20),
+                      MyTextFormField(
+                        labelText: 'Mật khẩu',
+                        controller: _passwordTextController,
+                        isObscure: _isObscure,
+                        validator: (val) {
+                          if (val == null || val.isEmpty) {
+                            return 'Vui lòng nhập mật khẩu!';
+                          }
+                          return null;
+                        },
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _isObscure
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Color(0xff646464),
                           ),
+                          onPressed: () {
+                            setState(() {
+                              _isObscure = !_isObscure;
+                            });
+                          },
                         ),
-                        SizedBox(
-                          height: 17,
-                        ),
-                        _buildLoginBtn(),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Bạn chưa có tài khoản ?',
+                      ),
+                      SizedBox(
+                        height: 17,
+                      ),
+                      _buildLoginBtn(),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Bạn chưa có tài khoản ?',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: ColorConstant.text,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          InkWell(
+                            child: Text(
+                              'Đăng ký mới',
                               style: TextStyle(
                                 fontSize: 14,
-                                color: ColorConstant.text,
+                                fontWeight: FontWeight.w500,
+                                color: ColorConstant.subPrimary,
                               ),
                             ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            InkWell(
-                              child: Text(
-                                'Đăng ký mới',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: ColorConstant.subPrimary,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

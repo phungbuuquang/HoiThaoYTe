@@ -7,4 +7,6 @@ class ColorConstant {
   static const Color primaryColor = Color(0xFF0D47A1);
   static const Color subPrimary = Color(0xff1976D2);
   static const Color text = Color(0xff7a7a7a);
+  static const Color grayf5 = Color(0xfff5f5f5);
+  static const Color grayEAB = Color(0xff919EAB);
 }

@@ -25,6 +25,36 @@ class CommonUtils {
     );
   }
 
+  static showConfirmDialog(BuildContext context,
+      {String? msg, Function()? okAction}) {
+    showCupertinoDialog(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+          title: Text("Thông báo"),
+          content: Text(msg ?? ''),
+          actions: [
+            CupertinoDialogAction(
+              child: Text("Huỷ bỏ"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            CupertinoDialogAction(
+              child: Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+                if (okAction != null) {
+                  okAction();
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   static Widget circleIndicator(BuildContext context) {
     return CircularProgressIndicator(
       color: Theme.of(context).primaryColor,

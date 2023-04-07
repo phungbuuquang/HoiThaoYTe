@@ -35,8 +35,16 @@ class _BaseTabbarScreenState extends State<BaseTabbarScreen> {
       child: Scaffold(
         bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: Theme.of(context).primaryColor,
-          unselectedLabelStyle: TextStyle(color: Colors.grey),
+          unselectedLabelStyle: TextStyle(
+            color: Colors.grey,
+            fontSize: 14,
+          ),
           unselectedItemColor: Colors.grey,
+          selectedLabelStyle: TextStyle(
+            color: Colors.grey,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
           currentIndex: _currentIndex,
           onTap: (val) {
             setState(() {
