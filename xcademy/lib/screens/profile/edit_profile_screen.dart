@@ -68,16 +68,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   updateProfile() {
-    _bloc.updateProfile(
-      fullName: _nameController.text,
-      phone: _phoneController.text,
-      email: _emailController.text,
-      address: _addressController.text,
-      placeBirth: _placeBirthController.text,
-      major: _majorController.text,
-      office: _officeController.text,
-      title: _titleController.text,
-    );
+    // _bloc.updateProfile(
+    //   fullName: _nameController.text,
+    //   phone: _phoneController.text,
+    //   email: _emailController.text,
+    //   address: _addressController.text,
+    //   placeBirth: _placeBirthController.text,
+    //   major: _majorController.text,
+    //   office: _officeController.text,
+    //   title: _titleController.text,
+    // );
   }
 
   @override

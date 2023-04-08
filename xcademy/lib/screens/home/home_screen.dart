@@ -230,7 +230,8 @@ class _HomeScreenState extends State<HomeScreen> {
             boxShadow: [
               BoxShadow(
                 color: ColorConstant.grayEAB.withOpacity(0.2),
-                blurRadius: 2,
+                blurRadius: 6,
+                offset: Offset(0, 5),
               ),
             ]),
         child: ClipRRect(
@@ -240,7 +241,8 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               Expanded(
                 child: MyImage(
-                  'https://cybershow.vn/wp-content/uploads/2020/02/company-trip-prudential-80-640x480.jpg',
+                  item.AnhBia ??
+                      'https://cybershow.vn/wp-content/uploads/2020/02/company-trip-prudential-80-640x480.jpg',
                   fit: BoxFit.cover,
                   width: double.infinity,
                   height: double.infinity,
@@ -256,7 +258,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Tên khoá học',
+                        item.TieuDe ?? 'Tên khoá học',
                         style: AppTextStyle.medium16Black,
                       ),
                       SizedBox(

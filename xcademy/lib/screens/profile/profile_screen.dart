@@ -11,6 +11,8 @@ import 'package:xcademy/services/di/di.dart';
 import 'package:xcademy/utils/common_utils.dart';
 import 'package:xcademy/utils/date_utils.dart';
 import 'package:xcademy/widgets/my_button.dart';
+import 'package:xcademy/widgets/my_image.dart';
+import 'package:xcademy/widgets/my_text_formfield.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -40,15 +42,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
         actions: injector.get<DataPrefs>().getUserId() == ''
             ? null
             : [
-                IconButton(
-                  onPressed: () {
-                    if (_bloc.user == null) {
-                      return;
-                    }
-                    Navigator.of(context).pushNamed(RouterName.edit_profile);
-                  },
-                  icon: Icon(
-                    Icons.edit,
+                Padding(
+                  padding: const EdgeInsets.only(right: 16),
+                  child: InkWell(
+                    onTap: () {
+                      if (_bloc.user == null) {
+                        return;
+                      }
+                      _bloc.updateProfile();
+                    },
+                    child: Center(
+                      child: Text(
+                        'Lưu',
+                        style: AppTextStyle.medium16Black
+                            .copyWith(color: Colors.white),
+                      ),
+                    ),
                   ),
                 )
               ],
@@ -79,123 +88,84 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _buildListInfoView(UserModel? user) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 30,
-      ),
+      padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // Container(
-          //   height: 100,
-          //   width: 100,
-          //   decoration: BoxDecoration(
-          //     borderRadius: BorderRadius.circular(50),
-          //   ),
-          //   child: ClipRRect(
-          //     borderRadius: BorderRadius.circular(50),
-          //     child: Image.network(
-          //       user?.AnhCaNhan ?? '',
-          //       fit: BoxFit.cover,
-          //     ),
-          //   ),
-          // ),
-          _buildInfoLabelView('Họ tên', user?.HoTen ?? ''),
-          SizedBox(
-            height: 24,
-          ),
-          _buildInfoLabelView('Số điện thoại',
-              user?.SoDienThoai == 'null' ? '' : user?.SoDienThoai ?? ''),
-          SizedBox(
-            height: 24,
-          ),
-          _buildInfoLabelView(
-              'Email', user?.Email == 'null' ? '' : user?.Email ?? ''),
-          SizedBox(
-            height: 24,
-          ),
-          _buildInfoLabelView(
-              'Địa chỉ', user?.DiaChi == 'null' ? '' : user?.DiaChi ?? ''),
-          SizedBox(
-            height: 24,
-          ),
-          _buildInfoLabelView('Giới tính',
-              user?.GioiTinh == 'null' ? '' : user?.GioiTinh ?? ''),
-          SizedBox(
-            height: 24,
-          ),
-          _buildInfoLabelView(
-            'Ngày sinh',
-            user?.NgaySinh == 'null'
-                ? ''
-                : DateUtil.strDatetoStr(
-                    user?.NgaySinh ?? '',
-                    format: 'dd/MM/yyyy',
+          Container(
+            padding: const EdgeInsets.all(5),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: ColorConstant.grayEAB.withOpacity(0.24),
+              ),
+            ),
+            child: Container(
+              height: 100,
+              width: 100,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(50),
+              ),
+              child: Stack(
+                children: [
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    bottom: 0,
+                    left: 0,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(50),
+                      child: MyImage(
+                        user?.AnhCaNhan ?? '',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
+                  Positioned(
+                    bottom: 10,
+                    right: 0,
+                    child: MyImage(
+                      'ic_add_photo.svg',
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          MyTextFormField(
+            labelText: 'Họ tên',
+            controller: _bloc.nameCtrler,
+          ),
+          SizedBox(height: 10),
+          MyTextFormField(
+            labelText: 'Số điện thoại',
+            controller: _bloc.phoneCtrler,
+          ),
+          SizedBox(height: 10),
+          MyTextFormField(
+            labelText: 'Email',
+            controller: _bloc.emailCtrler,
+          ),
+          SizedBox(height: 10),
+          MyTextFormField(
+            labelText: 'Giới tính',
+            controller: _bloc.genderCtrler,
+          ),
+          SizedBox(height: 10),
+          MyTextFormField(
+            labelText: 'Địa chỉ',
+            controller: _bloc.addressCtrler,
+          ),
+          SizedBox(height: 10),
+          MyTextFormField(
+            labelText: 'Tỉnh thành',
+            controller: _bloc.cityCtrler,
           ),
           SizedBox(
             height: 24,
-          ),
-          _buildInfoLabelView(
-            'Nơi sinh',
-            user?.NoiSinh == 'null' ? '' : user?.NoiSinh ?? '',
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          _buildInfoLabelView('Chuyên ngành',
-              user?.ChuyenNganh == 'null' ? '' : user?.ChuyenNganh ?? ''),
-          SizedBox(
-            height: 24,
-          ),
-          _buildInfoLabelView('Nơi làm việc',
-              user?.NoiLamViec == 'null' ? '' : user?.NoiLamViec ?? ''),
-          SizedBox(
-            height: 24,
-          ),
-          _buildInfoLabelView(
-            'Chức danh',
-            user?.ChucDanh == 'null' ? '' : user?.ChucDanh ?? '',
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          _buildInfoLabelView(
-              'Tỉnh thành công tác', user?.tenTinhThanhCongTac ?? ''),
-          SizedBox(
-            height: 24,
-          ),
-          _buildInfoImgView(
-            user,
-            title: 'Ảnh bằng tốt nghiệp chuyên khoa',
-            imgUrl: user?.AnhBangCap,
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          _buildInfoImgView(
-            user,
-            title: 'Ảnh thẻ hội viên',
-            imgUrl: user?.AnhTheHoiVien,
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          _buildInfoImgView(
-            user,
-            title: 'Ảnh chứng chỉ hành nghề',
-            imgUrl: user?.AnhChungChiHanhNghe,
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          _buildInfoImgView(
-            user,
-            title: 'Ảnh văn bằng cao nhất',
-            imgUrl: user?.AnhVanBangCaoNhat,
-          ),
-          SizedBox(
-            height: 30,
           ),
           _buildLogoutBtn()
         ],

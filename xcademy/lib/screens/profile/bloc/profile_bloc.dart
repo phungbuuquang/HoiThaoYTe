@@ -27,6 +27,12 @@ class ProfileBloc extends Cubit<ProfileState> {
   File? imageTHV;
   File? imageCCHN;
   File? imageVBCN;
+  final nameCtrler = TextEditingController();
+  final phoneCtrler = TextEditingController();
+  final emailCtrler = TextEditingController();
+  final genderCtrler = TextEditingController();
+  final addressCtrler = TextEditingController();
+  final cityCtrler = TextEditingController();
   getInfoUser() async {
     emit(ProfileLoadingState());
     final userId = injector.get<DataPrefs>().getUserId();
@@ -37,6 +43,12 @@ class ProfileBloc extends Cubit<ProfileState> {
       return;
     }
     user = res.data;
+    nameCtrler.text = user!.HoTen ?? '';
+    phoneCtrler.text = user!.SoDienThoai ?? '';
+    emailCtrler.text = user!.Email ?? '';
+    genderCtrler.text = user!.GioiTinh ?? '';
+    addressCtrler.text = user!.DiaChi ?? '';
+    cityCtrler.text = user!.TinhThanhCongTac ?? '';
     await getProvices();
     emit(ProfileLoadDoneState(user!));
   }
@@ -87,63 +99,54 @@ class ProfileBloc extends Cubit<ProfileState> {
     emit(ProfileSelectProvinceState());
   }
 
-  updateProfile({
-    String? fullName,
-    String? phone,
-    String? email,
-    String? address,
-    String? placeBirth,
-    String? major,
-    String? office,
-    String? title,
-  }) async {
+  updateProfile() async {
     emit(ProfileLoadingState());
     String urls = '';
     final userId = injector.get<DataPrefs>().getUserId();
-    if (fullName != user?.HoTen && fullName != null) {
-      urls += 'HoTen=$fullName&';
+    if (nameCtrler.text != user?.HoTen) {
+      urls += 'HoTen=${nameCtrler.text}&';
     }
-    if (phone != user?.SoDienThoai && phone != null) {
-      urls += 'SoDienThoai=$phone&';
+    if (phoneCtrler.text != user?.SoDienThoai) {
+      urls += 'SoDienThoai=${phoneCtrler.text}&';
     }
-    if (email != user?.Email && email != null) {
-      urls += 'Email=$email&';
+    if (emailCtrler.text != user?.Email) {
+      urls += 'Email=${emailCtrler.text}&';
     }
-    if (address != user?.DiaChi && address != null) {
-      urls += 'DiaChi=$address&';
+    if (addressCtrler.text != user?.DiaChi) {
+      urls += 'DiaChi=${addressCtrler.text}&';
     }
-    if (birthday != null) {
-      urls +=
-          'NgaySinh=${DateUtil.dateToStr(birthday!, format: 'MM/dd/yyyy')}&';
-    }
-    if (placeBirth != user?.NoiSinh && placeBirth != null) {
-      urls += 'NoiSinh=$birthday&';
-    }
-    if (major != user?.ChuyenNganh && major != null) {
-      urls += 'ChuyenNganh=$major&';
-    }
-    if (office != user?.NoiLamViec && office != null) {
-      urls += 'NoiLamViec=$office&';
-    }
-    if (title != user?.ChucDanh && title != null) {
-      urls += 'ChucDanh=$title&';
-    }
-    if (imageTNCK != null) {
-      urls += 'AnhBangCap=${_getFileName()}&';
-    }
-    if (province != null && province?.idTinhThanh != user?.TinhThanhCongTac) {
-      urls += 'TinhThanhCongTac=${province?.idTinhThanh}&';
-    }
+    // if (birthday != null) {
+    //   urls +=
+    //       'NgaySinh=${DateUtil.dateToStr(birthday!, format: 'MM/dd/yyyy')}&';
+    // }
+    // if (placeBirth != user?.NoiSinh && placeBirth != null) {
+    //   urls += 'NoiSinh=$birthday&';
+    // }
+    // if (major != user?.ChuyenNganh && major != null) {
+    //   urls += 'ChuyenNganh=$major&';
+    // }
+    // if (office != user?.NoiLamViec && office != null) {
+    //   urls += 'NoiLamViec=$office&';
+    // }
+    // if (title != user?.ChucDanh && title != null) {
+    //   urls += 'ChucDanh=$title&';
+    // }
+    // if (imageTNCK != null) {
+    //   urls += 'AnhBangCap=${_getFileName()}&';
+    // }
+    // if (province != null && province?.idTinhThanh != user?.TinhThanhCongTac) {
+    //   urls += 'TinhThanhCongTac=${province?.idTinhThanh}&';
+    // }
     FormData? form;
-    if (imageTNCK != null) {
-      form = FormData.fromMap({
-        'fileimg': MultipartFile.fromFileSync(
-          imageTNCK?.path ?? '',
-          contentType:
-              MediaType.parse(lookupMimeType(imageTNCK?.path ?? '') ?? ''),
-        ),
-      });
-    }
+    // if (imageTNCK != null) {
+    //   form = FormData.fromMap({
+    //     'fileimg': MultipartFile.fromFileSync(
+    //       imageTNCK?.path ?? '',
+    //       contentType:
+    //           MediaType.parse(lookupMimeType(imageTNCK?.path ?? '') ?? ''),
+    //     ),
+    //   });
+    // }
 
     final res = await injector.get<ApiClient>().updateInfoUser(
           userId,

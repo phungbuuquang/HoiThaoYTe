@@ -9,12 +9,14 @@ class MyTextFormField extends StatelessWidget {
     this.validator,
     this.suffixIcon,
     this.labelText,
+    this.radius,
   }) : super(key: key);
   final TextEditingController? controller;
   final bool isObscure;
   final String? Function(String?)? validator;
   final Widget? suffixIcon;
   final String? labelText;
+  final double? radius;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -34,21 +36,21 @@ class MyTextFormField extends StatelessWidget {
         contentPadding: const EdgeInsets.only(top: 10, left: 10),
         suffixIcon: suffixIcon,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(radius ?? 8),
           borderSide: BorderSide(
-            color: Color(0xffD8DFEA),
+            color: ColorConstant.grayEAB.withOpacity(0.24),
           ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(radius ?? 8),
           borderSide: BorderSide(
-            color: Color(0xffD8DFEA),
+            color: ColorConstant.grayEAB.withOpacity(0.24),
           ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(radius ?? 8),
           borderSide: BorderSide(
-            color: Color(0xffD8DFEA),
+            color: ColorConstant.grayEAB.withOpacity(0.24),
           ),
         ),
       ),
