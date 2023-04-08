@@ -75,44 +75,44 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildMyTutorialView() {
     return DataPrefsConstant.userId == ''
         ? SizedBox.shrink()
-        : Padding(
-            padding: const EdgeInsets.only(left: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Khoá học của bạn',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black,
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                BlocBuilder<HomeBloc, HomeState>(
-                  builder: (_, state) {
-                    bool isLoading = false;
-                    List<SeminarModel> listItems = [];
-                    if (state is HomeLoadingState) {
-                      isLoading = true;
-                    } else if (state is HomeGetSeminarsDoneState) {
-                      listItems = state.listSeminars;
-                    }
-                    return SizedBox(
+        : BlocBuilder<HomeBloc, HomeState>(
+            builder: (_, state) {
+              bool isLoading = false;
+              List<SeminarModel> listItems = [];
+              if (state is HomeLoadingState) {
+                isLoading = true;
+              } else if (state is HomeGetSeminarsDoneState) {
+                listItems = state.listSeminars;
+              }
+              return Padding(
+                padding: const EdgeInsets.only(left: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Khoá học của bạn',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    SizedBox(
                       height: 150,
                       child: _buildListTutorialView(
                         listItems,
                       ),
-                    );
-                  },
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                  ],
                 ),
-                SizedBox(
-                  height: 20,
-                ),
-              ],
-            ),
+              );
+            },
           );
   }
 

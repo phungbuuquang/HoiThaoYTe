@@ -5,6 +5,7 @@ class DataPrefs {
   DataPrefs(this.shared);
 
   Future<bool> saveUserId(String id) async {
+    DataPrefsConstant.userId = id;
     return shared.setString('user_id', id);
   }
 
@@ -30,6 +31,7 @@ class DataPrefs {
 
   clear() async {
     await shared.clear();
+    DataPrefsConstant.userId = '';
   }
 }
 

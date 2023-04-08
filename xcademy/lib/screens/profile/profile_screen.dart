@@ -237,7 +237,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   logout() async {
     await injector.get<DataPrefs>().clear();
     Navigator.of(context).pushNamedAndRemoveUntil(
-      RouterName.login,
+      RouterName.base_tabbar,
       (route) => false,
     );
   }

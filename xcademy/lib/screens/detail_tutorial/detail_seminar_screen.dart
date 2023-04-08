@@ -15,8 +15,8 @@ class DetailSeminarScreen extends StatefulWidget {
 
 class _DetailSeminarScreenState extends State<DetailSeminarScreen> {
   final List<String> menuList = [
-    'Tổng quan',
     'Chuyên đề',
+    'Tổng quan',
   ];
   List<Widget> _listViews = [];
   int _currentIndex = 0;
@@ -26,8 +26,8 @@ class _DetailSeminarScreenState extends State<DetailSeminarScreen> {
     super.initState();
 
     _listViews = [
-      OverviewScreen(),
       ListSubjectScreen(),
+      OverviewScreen(),
     ];
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _bloc.getDetailSeminar();

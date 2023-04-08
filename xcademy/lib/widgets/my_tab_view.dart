@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:xcademy/resources/color_constant.dart';
 
 class MyTabbar extends StatefulWidget {
   final Function(int)? onTap;
@@ -27,6 +28,7 @@ class _MyTabbarState extends State<MyTabbar>
       length: widget.tabs.length,
       child: Container(
         decoration: BoxDecoration(
+          color: Colors.white,
           border: Border(
             top: BorderSide(
               color: Colors.black.withOpacity(0.2),
@@ -38,7 +40,7 @@ class _MyTabbarState extends State<MyTabbar>
           indicator: UnderlineTabIndicator(
             borderSide: BorderSide(
               width: 3.0,
-              color: Colors.white,
+              color: Theme.of(context).primaryColor,
             ),
           ),
           labelStyle:
@@ -47,10 +49,9 @@ class _MyTabbarState extends State<MyTabbar>
           unselectedLabelStyle: const TextStyle(
             color: Colors.white,
             fontSize: 16,
-            fontWeight: FontWeight.w500,
           ),
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white,
+          labelColor: Theme.of(context).primaryColor,
+          unselectedLabelColor: ColorConstant.text,
           onTap: (index) {
             if (widget.onTap != null) {
               widget.onTap!(index);

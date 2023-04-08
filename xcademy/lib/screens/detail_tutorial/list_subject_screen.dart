@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:xcademy/models/subject/subject_model.dart';
 import 'package:xcademy/resources/color_constant.dart';
 import 'package:xcademy/routes/router_manager.dart';
+import 'package:xcademy/widgets/my_image.dart';
 
 import 'bloc/detail_seminar_bloc.dart';
 
@@ -24,7 +25,7 @@ class _ListSubjectScreenState extends State<ListSubjectScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorConstant.bgColor,
+      backgroundColor: ColorConstant.grayf5,
       body: _listSubjectView(),
     );
   }
@@ -68,23 +69,33 @@ class _ListSubjectScreenState extends State<ListSubjectScreen> {
       child: Container(
         height: 100,
         margin: const EdgeInsets.only(
-          bottom: 15,
-          left: 15,
-          right: 15,
+          bottom: 10,
+          left: 16,
+          right: 16,
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 8),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 8,
+          vertical: 10,
+        ),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              offset: const Offset(5, 5),
+              blurRadius: 15,
+              color: ColorConstant.grayEAB.withOpacity(0.24),
+            )
+          ],
         ),
         child: Row(
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(2),
-              child: Image.network(
+              borderRadius: BorderRadius.circular(4),
+              child: MyImage(
                 'https://dytvr9ot2sszz.cloudfront.net/wp-content/uploads/2019/05/1200x628_logstash-tutorial-min.jpg',
                 width: 120,
-                height: 84,
+                height: double.infinity,
                 fit: BoxFit.cover,
               ),
             ),

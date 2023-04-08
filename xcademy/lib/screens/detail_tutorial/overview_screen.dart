@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:xcademy/models/subject/subject_model.dart';
+import 'package:xcademy/resources/app_textstyle.dart';
 import 'package:xcademy/resources/assets_constant.dart';
+import 'package:xcademy/resources/color_constant.dart';
 import 'package:xcademy/screens/detail_tutorial/bloc/detail_seminar_bloc.dart';
 import 'package:xcademy/screens/detail_tutorial/image_bill_dialog.dart';
 import 'package:xcademy/utils/date_utils.dart';
@@ -20,127 +22,119 @@ class _OverviewScreenState extends State<OverviewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorConstant.grayf5,
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(
-            top: 20,
-            left: 20,
-            right: 20,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                (_bloc.seminar.TieuDe ?? '').toUpperCase(),
-                maxLines: null,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            MyImage(
+              _bloc.seminar.AnhBia ?? '',
+              fit: BoxFit.cover,
+              height: 200,
+              width: double.infinity,
+            ),
+            Container(
+              padding: const EdgeInsets.all(16),
+              margin: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: [
+                  BoxShadow(
+                    offset: const Offset(5, 5),
+                    blurRadius: 15,
+                    color: ColorConstant.grayEAB.withOpacity(0.24),
+                  )
+                ],
               ),
-              SizedBox(
-                height: 16,
-              ),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(5),
-                child: MyImage(
-                  _bloc.seminar.AnhBia ?? '',
-                  fit: BoxFit.cover,
-                  height: 200,
-                  width: double.infinity,
-                ),
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              Row(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Bắt đầu:',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey,
-                    ),
+                    (_bloc.seminar.TieuDe ?? '').toUpperCase(),
+                    maxLines: null,
+                    style: AppTextStyle.semibold18Black,
                   ),
                   SizedBox(
-                    width: 5,
+                    height: 10,
                   ),
-                  Expanded(
-                    child: Text(
-                      '${_bloc.seminar.ThoiGianBatDau}',
-                      maxLines: null,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.black,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Bắt đầu:',
+                        style: AppTextStyle.regular14Gray,
                       ),
-                    ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Expanded(
+                        child: Text(
+                          '${_bloc.seminar.ThoiGianBatDau}',
+                          maxLines: null,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Kết thúc:',
+                        style: AppTextStyle.regular14Gray,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Expanded(
+                        child: Text(
+                          '${_bloc.seminar.ThoiGianKetThuc}',
+                          maxLines: null,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Địa điểm:',
+                        style: AppTextStyle.regular14Gray,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Expanded(
+                        child: Text(
+                          _bloc.seminar.DiaDiem ?? '',
+                          maxLines: null,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-              SizedBox(
-                height: 16,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Kết thúc:',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Expanded(
-                    child: Text(
-                      '${_bloc.seminar.ThoiGianKetThuc}',
-                      maxLines: null,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Địa điểm:',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Expanded(
-                    child: Text(
-                      _bloc.seminar.DiaDiem ?? '',
-                      maxLines: null,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              _buildProgressView(),
-              _buildListProgressView(),
-            ],
-          ),
+            ),
+            _buildListProgressView(),
+          ],
         ),
       ),
     );
@@ -156,95 +150,78 @@ class _OverviewScreenState extends State<OverviewScreen> {
           listSubjects = state.listSubjects;
         }
 
-        return ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: isShowProgress ? listSubjects.length : 0,
-          padding: const EdgeInsets.only(top: 10, bottom: 10),
-          shrinkWrap: true,
-          itemBuilder: (_, index) {
-            final item = listSubjects[index];
-            int percent = 0;
-            if (item.TongThoiGianXem != null && item.TongThoiGianXem != '') {
-              final timeCurr = double.parse(item.TongThoiGianXem!);
-              final timeTotal = double.parse(item.ThoiLuongVideo!);
-              percent = ((timeCurr / timeTotal) * 100.0).round();
-            }
-            return Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      '${index + 1}.  ${item.TieuDe ?? ''}',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Text(
-                    '$percent%',
-                    style: TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
+        return Container(
+          padding: const EdgeInsets.all(16),
+          margin: const EdgeInsets.only(
+            left: 16,
+            right: 16,
+          ),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8),
+            boxShadow: [
+              BoxShadow(
+                offset: const Offset(5, 5),
+                blurRadius: 15,
+                color: ColorConstant.grayEAB.withOpacity(0.24),
+              )
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Tiến độ',
+                style: AppTextStyle.medium16Black,
               ),
-            );
-          },
+              ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: listSubjects.length,
+                padding: const EdgeInsets.only(bottom: 10),
+                shrinkWrap: true,
+                itemBuilder: (_, index) {
+                  final item = listSubjects[index];
+                  int percent = 0;
+                  if (item.TongThoiGianXem != null &&
+                      item.TongThoiGianXem != '') {
+                    final timeCurr = double.parse(item.TongThoiGianXem!);
+                    final timeTotal = double.parse(item.ThoiLuongVideo!);
+                    percent = ((timeCurr / timeTotal) * 100.0).round();
+                  }
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            '${index + 1}.  ${item.TieuDe ?? ''}',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Text(
+                          '$percent%',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         );
       },
-    );
-  }
-
-  Widget _buildProgressView() {
-    return InkWell(
-      onTap: () {
-        if (!isShowProgress) {
-          _bloc.getDetailSeminar();
-        }
-        setState(() {
-          isShowProgress = !isShowProgress;
-        });
-      },
-      child: Container(
-        height: 50,
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(5),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              offset: Offset(0, 1),
-              blurRadius: 2,
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Tiến độ',
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
-              ),
-            ),
-            Icon(
-              isShowProgress ? Icons.expand_more_outlined : Icons.chevron_right,
-              color: Colors.grey,
-            )
-          ],
-        ),
-      ),
     );
   }
 

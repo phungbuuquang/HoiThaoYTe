@@ -7,6 +7,11 @@ class AppTextStyle {
     fontWeight: FontWeight.w500,
     color: Colors.black,
   );
+  static const medium14Black = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    color: Colors.black,
+  );
   static const regular14Gray = TextStyle(
     fontSize: 14,
     color: ColorConstant.text,
@@ -14,5 +19,9 @@ class AppTextStyle {
   static const regular16White = TextStyle(
     fontSize: 16,
     color: Colors.white,
+  );
+  static const semibold18Black = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w600,
   );
 }
