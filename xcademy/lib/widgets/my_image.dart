@@ -46,6 +46,8 @@ class MyImage extends StatelessWidget {
           return Image.asset(
             'assets/${AssetsFolder.images.getFolder()}/img_loading_error.png',
             fit: BoxFit.cover,
+            width: width,
+            height: height,
           );
         },
         fit: BoxFit.cover,

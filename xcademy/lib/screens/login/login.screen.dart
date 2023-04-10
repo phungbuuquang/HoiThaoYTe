@@ -35,6 +35,13 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   @override
+  void initState() {
+    _usernameTextController.text = '0968990921';
+    _passwordTextController.text = '1232';
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
       listener: (_, state) {

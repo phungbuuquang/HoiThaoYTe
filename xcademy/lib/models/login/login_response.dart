@@ -6,7 +6,7 @@ part 'login_response.g.dart';
 
 @JsonSerializable()
 class LoginResponse extends BaseResponse {
-  List<UserModel>? data;
+  UserModel? data;
   LoginResponse();
   factory LoginResponse.fromJson(Map<String, dynamic> json) =>
       _$LoginResponseFromJson(json);

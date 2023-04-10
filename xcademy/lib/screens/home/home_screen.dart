@@ -91,11 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Text(
                       'Khoá học của bạn',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black,
-                      ),
+                      style: AppTextStyle.medium18Black,
                     ),
                     SizedBox(
                       height: 10,
@@ -126,11 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Text(
             title,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: Colors.black,
-            ),
+            style: AppTextStyle.medium18Black,
           ),
           SizedBox(
             height: 10,
@@ -299,28 +291,29 @@ class _HomeScreenState extends State<HomeScreen> {
           }
           return Row(
             children: [
-              id == null
+              DataPrefsConstant.userId == ''
                   ? SizedBox.shrink()
                   : ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: avatar != null && avatar != ''
-                          ? Image.network(
+                          ? MyImage(
                               avatar,
                               fit: BoxFit.cover,
                               width: 40,
                               height: 40,
                             )
-                          : Image.asset(
+                          : MyImage(
                               ImageConstant.human,
                               width: 40,
                               height: 40,
+                              folder: AssetsFolder.images,
                             ),
                     ),
               SizedBox(
                 width: 10,
               ),
               Expanded(
-                child: id == null
+                child: DataPrefsConstant.userId == ''
                     ? InkWell(
                         onTap: () =>
                             Navigator.of(context).pushNamed(RouterName.login),

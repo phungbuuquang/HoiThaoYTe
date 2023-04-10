@@ -15,19 +15,23 @@ class LoginBloc extends Cubit<LoginState> {
     String password,
   ) async {
     emit(LoginLoadingState());
-    final res = await injector.get<ApiClient>().login(username, password);
-    print(res);
-    if (res == null) {
-      emit(LoginFailedState(ErrorConstant.default_error));
-      return;
+    try {
+      final res = await injector.get<ApiClient>().login(username, password);
+      print(res);
+      if (res == null) {
+        emit(LoginFailedState(ErrorConstant.default_error));
+        return;
+      }
+      if (res.message != '') {
+        emit(LoginFailedState(res.message!));
+        return;
+      }
+      injector.get<DataPrefs>().saveUserId(res.data!.idHoiVien ?? '');
+      injector.get<DataPrefs>().saveUserName(res.data!.HoTen ?? '');
+      injector.get<DataPrefs>().saveAvatar(res.data!.AnhCaNhan ?? '');
+      emit(LoginSuccessState(res.data!));
+    } catch (error) {
+      print(error);
     }
-    if (res.message != '') {
-      emit(LoginFailedState(res.message!));
-      return;
-    }
-    injector.get<DataPrefs>().saveUserId(res.data!.first.idHoiVien ?? '');
-    injector.get<DataPrefs>().saveUserName(res.data!.first.HoTen ?? '');
-    injector.get<DataPrefs>().saveAvatar(res.data!.first.AnhCaNhan ?? '');
-    emit(LoginSuccessState(res.data!.first));
   }
 }

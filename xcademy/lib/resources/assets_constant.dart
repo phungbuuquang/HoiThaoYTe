@@ -3,6 +3,6 @@ class IconConstant {
 }
 
 class ImageConstant {
-  static const placeholder = 'assets/images/placeholder.png';
-  static const human = 'assets/images/ic_human.png';
+  static const placeholder = 'placeholder.png';
+  static const human = 'ic_human.png';
 }

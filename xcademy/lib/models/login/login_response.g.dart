@@ -9,9 +9,9 @@ part of 'login_response.dart';
 LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) =>
     LoginResponse()
       ..message = json['message'] as String?
-      ..data = (json['data'] as List<dynamic>?)
-          ?.map((e) => UserModel.fromJson(e as Map<String, dynamic>))
-          .toList();
+      ..data = json['data'] == null
+          ? null
+          : UserModel.fromJson(json['data'] as Map<String, dynamic>);
 
 Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
     <String, dynamic>{

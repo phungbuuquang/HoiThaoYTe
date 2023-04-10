@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:xcademy/models/user/user_model.dart';
 import 'package:xcademy/resources/app_textstyle.dart';
 import 'package:xcademy/resources/assets_constant.dart';
@@ -8,8 +9,6 @@ import 'package:xcademy/routes/router_manager.dart';
 import 'package:xcademy/screens/profile/bloc/profile_bloc.dart';
 import 'package:xcademy/services/data_pref/date_prefs.dart';
 import 'package:xcademy/services/di/di.dart';
-import 'package:xcademy/utils/common_utils.dart';
-import 'package:xcademy/utils/date_utils.dart';
 import 'package:xcademy/widgets/my_button.dart';
 import 'package:xcademy/widgets/my_image.dart';
 import 'package:xcademy/widgets/my_text_formfield.dart';
@@ -113,19 +112,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     right: 0,
                     bottom: 0,
                     left: 0,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: MyImage(
-                        user?.AnhCaNhan ?? '',
-                        fit: BoxFit.cover,
+                    child: BlocBuilder<ProfileBloc, ProfileState>(
+                      buildWhen: (previous, current) =>
+                          current is ProfileSelectImageState,
+                      builder: (_, state) => InkWell(
+                        onTap: _modalBottomSheetMenu,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
+                          child: _bloc.imageAvt != null
+                              ? Image.file(
+                                  _bloc.imageAvt!,
+                                  fit: BoxFit.cover,
+                                )
+                              : MyImage(
+                                  user?.AnhCaNhan ?? '',
+                                  fit: BoxFit.cover,
+                                ),
+                        ),
                       ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 10,
-                    right: 0,
-                    child: MyImage(
-                      'ic_add_photo.svg',
                     ),
                   ),
                 ],
@@ -161,7 +165,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           SizedBox(height: 10),
           MyTextFormField(
-            labelText: 'Tỉnh thành',
+            labelText: 'Tỉnh thành công tác',
+            controller: _bloc.cityCtrler,
+          ),
+          SizedBox(height: 10),
+          MyTextFormField(
+            labelText: 'Facebook',
+            controller: _bloc.cityCtrler,
+          ),
+          SizedBox(height: 10),
+          MyTextFormField(
+            labelText: 'Zalo',
             controller: _bloc.cityCtrler,
           ),
           SizedBox(
@@ -204,11 +218,97 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  _pickImage() async {
+    final ImagePicker _picker = ImagePicker();
+    // Pick an image
+    final XFile? image = await _picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 50,
+    );
+    print(image);
+    if (image != null) {
+      _bloc.selectImage(image);
+    }
+  }
+
   logout() async {
     await injector.get<DataPrefs>().clear();
     Navigator.of(context).pushNamedAndRemoveUntil(
       RouterName.base_tabbar,
       (route) => false,
+    );
+  }
+
+  void _modalBottomSheetMenu() {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+        topLeft: const Radius.circular(10.0),
+        topRight: const Radius.circular(10.0),
+      )),
+      builder: (builder) {
+        return new Container(
+          height: 130,
+          color: Colors.transparent,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: const Radius.circular(10.0),
+                topRight: const Radius.circular(10.0),
+              ),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  height: 64,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: ColorConstant.grayEAB,
+                      ),
+                    ),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Tuỳ chọn',
+                      style: AppTextStyle.medium16Black,
+                    ),
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    _pickImage();
+                  },
+                  child: Container(
+                    height: 48,
+                    width: double.infinity,
+                    margin: const EdgeInsets.symmetric(horizontal: 24),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: ColorConstant.grayEAB.withOpacity(0.24),
+                        ),
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Tải ảnh đại điện',
+                        style: AppTextStyle.regular16White.copyWith(
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 

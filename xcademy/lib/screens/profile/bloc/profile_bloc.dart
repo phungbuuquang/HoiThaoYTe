@@ -68,7 +68,7 @@ class ProfileBloc extends Cubit<ProfileState> {
   }
 
   selectImage(XFile image) {
-    imageTNCK = File(image.path);
+    imageAvt = File(image.path);
     emit(
       ProfileSelectImageState(),
     );
@@ -138,12 +138,12 @@ class ProfileBloc extends Cubit<ProfileState> {
     //   urls += 'TinhThanhCongTac=${province?.idTinhThanh}&';
     // }
     FormData? form;
-    // if (imageTNCK != null) {
+    // if (imageAvt != null) {
     //   form = FormData.fromMap({
     //     'fileimg': MultipartFile.fromFileSync(
-    //       imageTNCK?.path ?? '',
+    //       imageAvt?.path ?? '',
     //       contentType:
-    //           MediaType.parse(lookupMimeType(imageTNCK?.path ?? '') ?? ''),
+    //           MediaType.parse(lookupMimeType(imageAvt?.path ?? '') ?? ''),
     //     ),
     //   });
     // }
