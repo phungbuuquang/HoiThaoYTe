@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class CommonUtils {
   static showOkDialog(
@@ -60,5 +61,15 @@ class CommonUtils {
       color: Theme.of(context).primaryColor,
       strokeWidth: 3,
     );
+  }
+
+  static void showLoading() {
+    EasyLoading.show(
+      maskType: EasyLoadingMaskType.black,
+    );
+  }
+
+  static void hideLoading() {
+    EasyLoading.dismiss();
   }
 }

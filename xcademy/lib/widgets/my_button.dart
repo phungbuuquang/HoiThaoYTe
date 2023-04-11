@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 
 class MyButton extends StatelessWidget {
-  const MyButton(
-      {Key? key,
-      this.isLoading = false,
-      required this.onTap,
-      required this.title,
-      this.width})
-      : super(key: key);
+  const MyButton({
+    Key? key,
+    this.isLoading = false,
+    required this.onTap,
+    required this.title,
+    this.radius,
+    this.width,
+  }) : super(key: key);
   final bool isLoading;
   final Function() onTap;
   final String title;
   final double? width;
+  final double? radius;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -21,7 +23,7 @@ class MyButton extends StatelessWidget {
         width: width,
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColor,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(radius ?? 8),
         ),
         child: Center(
           child: isLoading

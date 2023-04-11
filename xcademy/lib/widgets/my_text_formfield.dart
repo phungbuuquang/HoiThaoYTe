@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:xcademy/resources/color_constant.dart';
 
 class MyTextFormField extends StatelessWidget {
@@ -8,8 +9,10 @@ class MyTextFormField extends StatelessWidget {
     this.isObscure = false,
     this.validator,
     this.suffixIcon,
+    this.keyboardType,
     this.labelText,
     this.radius,
+    this.inputFormatters,
   }) : super(key: key);
   final TextEditingController? controller;
   final bool isObscure;
@@ -17,6 +20,8 @@ class MyTextFormField extends StatelessWidget {
   final Widget? suffixIcon;
   final String? labelText;
   final double? radius;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -27,6 +32,8 @@ class MyTextFormField extends StatelessWidget {
       controller: controller,
       obscureText: isObscure,
       validator: validator,
+      keyboardType: keyboardType,
+      inputFormatters: inputFormatters,
       decoration: InputDecoration(
         labelText: labelText,
         labelStyle: TextStyle(

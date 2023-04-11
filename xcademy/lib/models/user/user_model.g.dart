@@ -24,7 +24,9 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel()
   ..AnhCaNhan = json['AnhCaNhan'] as String?
   ..AnhTheHoiVien = json['AnhTheHoiVien'] as String?
   ..AnhChungChiHanhNghe = json['AnhChungChiHanhNghe'] as String?
-  ..AnhVanBangCaoNhat = json['AnhVanBangCaoNhat'] as String?;
+  ..AnhVanBangCaoNhat = json['AnhVanBangCaoNhat'] as String?
+  ..facebook = json['facebook'] as String?
+  ..zalo = json['zalo'] as String?;
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'idHoiVien': instance.idHoiVien,
@@ -45,4 +47,6 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'AnhTheHoiVien': instance.AnhTheHoiVien,
       'AnhChungChiHanhNghe': instance.AnhChungChiHanhNghe,
       'AnhVanBangCaoNhat': instance.AnhVanBangCaoNhat,
+      'facebook': instance.facebook,
+      'zalo': instance.zalo,
     };

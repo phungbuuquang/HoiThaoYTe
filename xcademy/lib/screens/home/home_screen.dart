@@ -192,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
   ListView _buildListTutorialView(List<SeminarModel> listItems) {
     return ListView.builder(
       itemCount: listItems.isEmpty ? 10 : listItems.length,
-      shrinkWrap: true,
+      // shrinkWrap: true,
       scrollDirection: Axis.horizontal,
       // padding: const EdgeInsets.only(top: 15),
       itemBuilder: (_, index) {

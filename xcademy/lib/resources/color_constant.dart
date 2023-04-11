@@ -9,4 +9,5 @@ class ColorConstant {
   static const Color text = Color(0xff7a7a7a);
   static const Color grayf5 = Color(0xfff5f5f5);
   static const Color grayEAB = Color(0xff919EAB);
+  static const selected = Color(0xffECF0FA);
 }

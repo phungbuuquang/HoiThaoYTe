@@ -10,6 +10,7 @@ import 'package:xcademy/models/user/user_model.dart';
 import 'package:xcademy/services/api_request/api_client.dart';
 import 'package:xcademy/services/data_pref/date_prefs.dart';
 import 'package:xcademy/services/di/di.dart';
+import 'package:xcademy/utils/common_utils.dart';
 import 'package:xcademy/utils/date_utils.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:mime/mime.dart';
@@ -33,6 +34,10 @@ class ProfileBloc extends Cubit<ProfileState> {
   final genderCtrler = TextEditingController();
   final addressCtrler = TextEditingController();
   final cityCtrler = TextEditingController();
+  final fbCtrler = TextEditingController();
+  final zaloCtrler = TextEditingController();
+  final genders = ['Nam', 'Nữ'];
+  var gender = "Nữ";
   getInfoUser() async {
     emit(ProfileLoadingState());
     final userId = injector.get<DataPrefs>().getUserId();
@@ -49,6 +54,11 @@ class ProfileBloc extends Cubit<ProfileState> {
     genderCtrler.text = user!.GioiTinh ?? '';
     addressCtrler.text = user!.DiaChi ?? '';
     cityCtrler.text = user!.TinhThanhCongTac ?? '';
+    fbCtrler.text = user!.facebook ?? '';
+    zaloCtrler.text = user!.zalo ?? '';
+
+    // gender = user?.GioiTinh ?? 'Nam';
+
     await getProvices();
     emit(ProfileLoadDoneState(user!));
   }
@@ -79,6 +89,14 @@ class ProfileBloc extends Cubit<ProfileState> {
     if (res != null && res.data != null) {
       final provinces = res.data!;
       listProvinces = res.data!;
+      DataPrefsConstant.provinces.add(
+        ProvinceModel(
+          idTinhThanh: '999',
+          TenTinhThanh: 'Chọn tỉnh thành',
+        ),
+      );
+      DataPrefsConstant.provinces.addAll(res.data!);
+
       for (var i = 0; i < provinces.length; i++) {
         if (provinces[i].idTinhThanh == (user?.TinhThanhCongTac ?? '')) {
           user?.tenTinhThanhCongTac = provinces[i].TenTinhThanh;
@@ -100,20 +118,21 @@ class ProfileBloc extends Cubit<ProfileState> {
   }
 
   updateProfile() async {
+    CommonUtils.showLoading();
     emit(ProfileLoadingState());
     String urls = '';
     final userId = injector.get<DataPrefs>().getUserId();
     if (nameCtrler.text != user?.HoTen) {
-      urls += 'HoTen=${nameCtrler.text}&';
+      urls += 'HoTen=${nameCtrler.text}';
     }
     if (phoneCtrler.text != user?.SoDienThoai) {
-      urls += 'SoDienThoai=${phoneCtrler.text}&';
+      urls += '&SoDienThoai=${phoneCtrler.text}';
     }
     if (emailCtrler.text != user?.Email) {
-      urls += 'Email=${emailCtrler.text}&';
+      urls += '&Email=${emailCtrler.text}&';
     }
     if (addressCtrler.text != user?.DiaChi) {
-      urls += 'DiaChi=${addressCtrler.text}&';
+      urls += '&DiaChi=${addressCtrler.text}&';
     }
     // if (birthday != null) {
     //   urls +=
@@ -154,6 +173,7 @@ class ProfileBloc extends Cubit<ProfileState> {
           form,
         );
     print(res);
+    CommonUtils.hideLoading();
     if (res != null && res.data?.first != null) {
       if (res.data?.first.result?.replaceAll(' ', '') == 'success') {
         getInfoUser();

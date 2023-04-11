@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:xcademy/models/province/province_response.dart';
 
 class DataPrefs {
   SharedPreferences shared;
@@ -37,4 +38,5 @@ class DataPrefs {
 
 class DataPrefsConstant {
   static String userId = '';
+  static List<ProvinceModel> provinces = [];
 }

@@ -16,7 +16,10 @@ class ProvinceResponse extends BaseResponse {
 class ProvinceModel {
   String? idTinhThanh;
   String? TenTinhThanh;
-  ProvinceModel();
+  ProvinceModel({
+    this.idTinhThanh,
+    this.TenTinhThanh,
+  });
   factory ProvinceModel.fromJson(Map<String, dynamic> json) =>
       _$ProvinceModelFromJson(json);
 }

@@ -12,6 +12,7 @@ import 'package:xcademy/services/di/di.dart';
 import 'package:xcademy/widgets/my_button.dart';
 import 'package:xcademy/widgets/my_image.dart';
 import 'package:xcademy/widgets/my_text_formfield.dart';
+import 'package:xcademy/widgets/my_textfield_dropdown.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -38,7 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text('Thông tin cá nhân'),
-        actions: injector.get<DataPrefs>().getUserId() == ''
+        actions: DataPrefsConstant.userId == ''
             ? null
             : [
                 Padding(
@@ -61,11 +62,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 )
               ],
       ),
-      body: injector.get<DataPrefs>().getUserId() == ''
+      body: DataPrefsConstant.userId == ''
           ? Center(
               child: MyButton(
                 title: 'Đăng nhập',
                 width: 200,
+                radius: 28,
                 onTap: () => Navigator.of(context).pushNamed(RouterName.login),
               ),
             )
@@ -154,9 +156,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             controller: _bloc.emailCtrler,
           ),
           SizedBox(height: 10),
-          MyTextFormField(
+          MyTextFieldDropdown(
             labelText: 'Giới tính',
-            controller: _bloc.genderCtrler,
+            items: _bloc.genders,
+            value: _bloc.gender,
+            onChanged: (val) {
+              print(val);
+            },
           ),
           SizedBox(height: 10),
           MyTextFormField(
@@ -164,19 +170,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
             controller: _bloc.addressCtrler,
           ),
           SizedBox(height: 10),
-          MyTextFormField(
-            labelText: 'Tỉnh thành công tác',
-            controller: _bloc.cityCtrler,
+          MyTextFieldDropdown(
+            items: DataPrefsConstant.provinces
+                .map((e) => e.TenTinhThanh ?? '')
+                .toList(),
+            value: user?.tenTinhThanhCongTac ?? 'Chọn tỉnh thành',
+            onChanged: (val) {
+              print(val);
+            },
           ),
           SizedBox(height: 10),
           MyTextFormField(
             labelText: 'Facebook',
-            controller: _bloc.cityCtrler,
+            controller: _bloc.fbCtrler,
           ),
           SizedBox(height: 10),
           MyTextFormField(
             labelText: 'Zalo',
-            controller: _bloc.cityCtrler,
+            controller: _bloc.zaloCtrler,
           ),
           SizedBox(
             height: 24,

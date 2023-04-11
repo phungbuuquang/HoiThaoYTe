@@ -20,9 +20,10 @@ Map<String, dynamic> _$ProvinceResponseToJson(ProvinceResponse instance) =>
     };
 
 ProvinceModel _$ProvinceModelFromJson(Map<String, dynamic> json) =>
-    ProvinceModel()
-      ..idTinhThanh = json['idTinhThanh'] as String?
-      ..TenTinhThanh = json['TenTinhThanh'] as String?;
+    ProvinceModel(
+      idTinhThanh: json['idTinhThanh'] as String?,
+      TenTinhThanh: json['TenTinhThanh'] as String?,
+    );
 
 Map<String, dynamic> _$ProvinceModelToJson(ProvinceModel instance) =>
     <String, dynamic>{

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:xcademy/resources/color_constant.dart';
 import 'package:xcademy/screens/home/bloc/home_bloc.dart';
 import 'package:xcademy/screens/home/home_screen.dart';
 import 'package:xcademy/screens/profile/bloc/profile_bloc.dart';
 
 import 'package:xcademy/screens/profile/profile_screen.dart';
+import 'package:xcademy/widgets/my_image.dart';
 
 class BaseTabbarScreen extends StatefulWidget {
   const BaseTabbarScreen({Key? key}) : super(key: key);
@@ -53,10 +55,15 @@ class _BaseTabbarScreenState extends State<BaseTabbarScreen> {
           },
           items: [
             BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
+              icon: MyImage(
+                'ic_home.svg',
+                color: ColorConstant.grayEAB,
               ),
               label: 'Trang chủ',
+              activeIcon: MyImage(
+                'ic_home.svg',
+                color: Theme.of(context).primaryColor,
+              ),
             ),
             // BottomNavigationBarItem(
             //   icon: Icon(
@@ -71,10 +78,15 @@ class _BaseTabbarScreenState extends State<BaseTabbarScreen> {
             //   label: 'Hội thảo',
             // ),
             BottomNavigationBarItem(
-              icon: Icon(
-                Icons.person,
+              icon: MyImage(
+                'ic_person.svg',
+                color: ColorConstant.grayEAB,
               ),
               label: 'Cá nhân',
+              activeIcon: MyImage(
+                'ic_person.svg',
+                color: Theme.of(context).primaryColor,
+              ),
             ),
           ],
         ),

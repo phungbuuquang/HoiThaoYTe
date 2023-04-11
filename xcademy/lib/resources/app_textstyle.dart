@@ -21,9 +21,17 @@ class AppTextStyle {
     fontSize: 14,
     color: ColorConstant.text,
   );
+  static const regular12Gray = TextStyle(
+    fontSize: 12,
+    color: ColorConstant.text,
+  );
   static const regular16White = TextStyle(
     fontSize: 16,
     color: Colors.white,
+  );
+  static const regular16Black = TextStyle(
+    fontSize: 16,
+    color: Colors.black,
   );
   static const semibold18Black = TextStyle(
     fontSize: 18,

@@ -9,8 +9,9 @@ import 'package:xcademy/screens/lession/subject_screen.dart';
 import 'package:xcademy/screens/list_notification.dart/list_notification_screen.dart';
 import 'package:xcademy/screens/login/bloc/login_bloc.dart';
 import 'package:xcademy/screens/login/login.screen.dart';
-import 'package:xcademy/screens/profile/bloc/profile_bloc.dart';
 import 'package:xcademy/screens/profile/edit_profile_screen.dart';
+import 'package:xcademy/screens/signup/bloc/signup_bloc.dart';
+import 'package:xcademy/screens/signup/signup_screen.dart';
 import 'package:xcademy/screens/tabbar/base_tabbar_screen.dart';
 
 class RouterManager {
@@ -41,6 +42,13 @@ class RouterManager {
             child: SubjectScreen(),
           ),
         );
+      case RouterName.signup:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => SignupBloc(),
+            child: SignupScreen(),
+          ),
+        );
       case RouterName.edit_profile:
         return MaterialPageRoute(builder: (_) => EditProfileScreen());
       case RouterName.list_notification:
@@ -62,4 +70,5 @@ class RouterName {
   static const String lession = '/lession';
   static const String list_notification = '/list_notification';
   static const String edit_profile = '/edit_profile';
+  static const String signup = '/signup';
 }

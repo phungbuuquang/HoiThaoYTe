@@ -164,6 +164,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             width: 5,
                           ),
                           InkWell(
+                            onTap: () => Navigator.of(context)
+                                .pushNamed(RouterName.signup),
                             child: Text(
                               'Đăng ký mới',
                               style: TextStyle(

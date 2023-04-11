@@ -20,8 +20,7 @@ class SubjectBloc extends Cubit<SubjectState> {
 
   String getUrl() {
     print(Uri.encodeFull(subject.LinkVideo ?? ''));
-    final url =
-        Configurations.base_url + Uri.encodeFull(subject.LinkVideo ?? '');
+    final url = Uri.encodeFull(subject.LinkVideo ?? '');
 
     return url;
   }
@@ -48,8 +47,8 @@ class SubjectBloc extends Cubit<SubjectState> {
   }
 
   String _getUrlPdf() {
-    final url = (Configurations.base_url + listPdf[currentPdf])
-        .replaceAll('.pdf', '_${currentPage + 1}.png');
+    final url =
+        listPdf[currentPdf].replaceAll('.pdf', '_${currentPage + 1}.png');
     return url;
   }
 

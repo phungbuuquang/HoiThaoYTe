@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:xcademy/resources/color_constant.dart';
 import 'package:xcademy/routes/router_manager.dart';
@@ -12,6 +13,7 @@ import 'package:xcademy/services/di/di.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runZonedGuarded(() async {
+    configLoading();
     initializeDateFormatting();
     await DependencyInjection.inject();
 
@@ -67,6 +69,23 @@ class MyApp extends StatelessWidget {
       ),
       onGenerateRoute: RouterManager.generateRoute,
       initialRoute: RouterName.base_tabbar,
+      builder: EasyLoading.init(),
     );
   }
+}
+
+void configLoading() {
+  EasyLoading.instance
+    ..displayDuration = const Duration(milliseconds: 2000)
+    ..indicatorType = EasyLoadingIndicatorType.ring
+    ..loadingStyle = EasyLoadingStyle.custom
+    ..indicatorSize = 45.0
+    ..radius = 10.0
+    ..progressColor = Colors.yellow
+    ..backgroundColor = Colors.white
+    ..indicatorColor = ColorConstant.primaryColor
+    ..textColor = Colors.yellow
+    ..userInteractions = false
+    ..maskColor = Colors.blue.withOpacity(0.5)
+    ..dismissOnTap = false;
 }
