@@ -44,8 +44,7 @@ class _BaseTabbarScreenState extends State<BaseTabbarScreen> {
           unselectedItemColor: Colors.grey,
           selectedLabelStyle: TextStyle(
             color: Colors.grey,
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
+            fontSize: 14,
           ),
           currentIndex: _currentIndex,
           onTap: (val) {

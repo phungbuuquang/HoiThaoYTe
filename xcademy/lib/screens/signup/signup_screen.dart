@@ -123,7 +123,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     items: DataPrefsConstant.provinces
                         .map((e) => e.TenTinhThanh ?? '')
                         .toList(),
-                    value: _bloc.province.TenTinhThanh ?? 'Chọn tỉnh thành',
+                    value: _bloc.province.TenTinhThanh!,
                     onChanged: (val) {
                       print(val);
                     },

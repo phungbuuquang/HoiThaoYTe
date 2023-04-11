@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 import 'package:xcademy/models/base/update_base_response.dart';
@@ -38,12 +36,22 @@ abstract class ApiClient {
     @Path("userId") String userId,
     @Path("idSubject") String idSubject,
   );
-  @POST('${Apis.update_info_user}?idHoiVien={userId}&{urls}')
+  @POST('${Apis.update_info_user}?idHoiVien={userId}{urls}')
   @MultiPart()
   Future<UpdateBaseResponse?> updateInfoUser(
     @Path("userId") String userId,
     @Path("urls") String urls,
     @Body() FormData? formData,
+  );
+  @POST(Apis.register)
+  Future<UpdateBaseResponse?> registerUser(
+    @Query('MaHoiVien') String idUser,
+    @Query('HoTen') String fullName,
+    @Query('GioiTinh') String gender,
+    @Query('SoDienThoai') String phone,
+    @Query('Email') String email,
+    @Query('MatKhau') String password,
+    @Query('TinhThanhCongTac') String province,
   );
 
   @GET('${Apis.provinces}')

@@ -89,12 +89,13 @@ class ProfileBloc extends Cubit<ProfileState> {
     if (res != null && res.data != null) {
       final provinces = res.data!;
       listProvinces = res.data!;
-      DataPrefsConstant.provinces.add(
+      DataPrefsConstant.provinces = [
         ProvinceModel(
           idTinhThanh: '999',
           TenTinhThanh: 'Chọn tỉnh thành',
-        ),
-      );
+        )
+      ];
+
       DataPrefsConstant.provinces.addAll(res.data!);
 
       for (var i = 0; i < provinces.length; i++) {
@@ -123,7 +124,7 @@ class ProfileBloc extends Cubit<ProfileState> {
     String urls = '';
     final userId = injector.get<DataPrefs>().getUserId();
     if (nameCtrler.text != user?.HoTen) {
-      urls += 'HoTen=${nameCtrler.text}';
+      urls += '&HoTen=${nameCtrler.text}';
     }
     if (phoneCtrler.text != user?.SoDienThoai) {
       urls += '&SoDienThoai=${phoneCtrler.text}';
@@ -134,6 +135,7 @@ class ProfileBloc extends Cubit<ProfileState> {
     if (addressCtrler.text != user?.DiaChi) {
       urls += '&DiaChi=${addressCtrler.text}&';
     }
+    var encoded = Uri.encodeFull(urls);
     // if (birthday != null) {
     //   urls +=
     //       'NgaySinh=${DateUtil.dateToStr(birthday!, format: 'MM/dd/yyyy')}&';
@@ -169,7 +171,7 @@ class ProfileBloc extends Cubit<ProfileState> {
 
     final res = await injector.get<ApiClient>().updateInfoUser(
           userId,
-          urls,
+          encoded,
           form,
         );
     print(res);

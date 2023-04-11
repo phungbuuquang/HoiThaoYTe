@@ -9,6 +9,7 @@ import 'package:xcademy/routes/router_manager.dart';
 import 'package:xcademy/screens/profile/bloc/profile_bloc.dart';
 import 'package:xcademy/services/data_pref/date_prefs.dart';
 import 'package:xcademy/services/di/di.dart';
+import 'package:xcademy/utils/common_utils.dart';
 import 'package:xcademy/widgets/my_button.dart';
 import 'package:xcademy/widgets/my_image.dart';
 import 'package:xcademy/widgets/my_text_formfield.dart';
@@ -74,9 +75,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           : SingleChildScrollView(
               child: BlocBuilder<ProfileBloc, ProfileState>(
                 buildWhen: (prev, curr) {
-                  return curr is ProfileLoadDoneState;
+                  return curr is ProfileLoadDoneState ||
+                      curr is ProfileLoadingState;
                 },
                 builder: (context, state) {
+                  if (state is ProfileLoadingState) {
+                    return CommonUtils.circleIndicator(context);
+                  }
                   if (state is ProfileLoadDoneState) {
                     return _buildListInfoView(state.user);
                   }
@@ -243,10 +248,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   logout() async {
-    await injector.get<DataPrefs>().clear();
-    Navigator.of(context).pushNamedAndRemoveUntil(
-      RouterName.base_tabbar,
-      (route) => false,
+    CommonUtils.showConfirmDialog(
+      context,
+      msg: 'Bạn chắc chắn muốn đăng xuất?',
+      okAction: () async {
+        await injector.get<DataPrefs>().clear();
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          RouterName.base_tabbar,
+          (route) => false,
+        );
+      },
     );
   }
 
