@@ -36,11 +36,15 @@ abstract class ApiClient {
     @Path("userId") String userId,
     @Path("idSubject") String idSubject,
   );
-  @POST('${Apis.update_info_user}?idHoiVien={userId}{urls}')
+  @POST(Apis.update_info_user)
   @MultiPart()
   Future<UpdateBaseResponse?> updateInfoUser(
-    @Path("userId") String userId,
-    @Path("urls") String urls,
+    @Query('idHoiVien') String idUser,
+    @Query('HoTen') String fullName,
+    @Query('GioiTinh') String gender,
+    @Query('SoDienThoai') String phone,
+    @Query('Email') String email,
+    @Query('TinhThanhCongTac') String province,
     @Body() FormData? formData,
   );
   @POST(Apis.register)

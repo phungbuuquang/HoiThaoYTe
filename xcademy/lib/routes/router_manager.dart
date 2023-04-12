@@ -8,7 +8,7 @@ import 'package:xcademy/screens/lession/bloc/subject_bloc.dart';
 import 'package:xcademy/screens/lession/subject_screen.dart';
 import 'package:xcademy/screens/list_notification.dart/list_notification_screen.dart';
 import 'package:xcademy/screens/login/bloc/login_bloc.dart';
-import 'package:xcademy/screens/login/login.screen.dart';
+import 'package:xcademy/screens/login/login_screen.dart';
 import 'package:xcademy/screens/profile/edit_profile_screen.dart';
 import 'package:xcademy/screens/signup/bloc/signup_bloc.dart';
 import 'package:xcademy/screens/signup/signup_screen.dart';

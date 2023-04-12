@@ -6,6 +6,7 @@ class CommonUtils {
   static showOkDialog(
     BuildContext context, {
     String? msg,
+    Function()? okAction,
   }) {
     showCupertinoDialog(
       context: context,
@@ -18,6 +19,9 @@ class CommonUtils {
               child: Text("OK"),
               onPressed: () {
                 Navigator.of(context).pop();
+                if (okAction != null) {
+                  okAction();
+                }
               },
             ),
           ],
@@ -71,5 +75,14 @@ class CommonUtils {
 
   static void hideLoading() {
     EasyLoading.dismiss();
+  }
+}
+
+extension StringExt on String {
+  bool get isEmail {
+    final bool emailValid = RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(this);
+    return emailValid;
   }
 }

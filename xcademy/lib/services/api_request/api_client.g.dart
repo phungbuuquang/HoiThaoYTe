@@ -107,12 +107,23 @@ class _ApiClient implements ApiClient {
 
   @override
   Future<UpdateBaseResponse?> updateInfoUser(
-    userId,
-    urls,
+    idUser,
+    fullName,
+    gender,
+    phone,
+    email,
+    province,
     formData,
   ) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'idHoiVien': idUser,
+      r'HoTen': fullName,
+      r'GioiTinh': gender,
+      r'SoDienThoai': phone,
+      r'Email': email,
+      r'TinhThanhCongTac': province,
+    };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = formData;
@@ -125,7 +136,7 @@ class _ApiClient implements ApiClient {
     )
             .compose(
               _dio.options,
-              'luutthoivien?idHoiVien=${userId}${urls}',
+              'luutthoivien',
               queryParameters: queryParameters,
               data: _data,
             )

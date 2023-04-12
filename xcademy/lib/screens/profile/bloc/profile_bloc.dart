@@ -37,7 +37,7 @@ class ProfileBloc extends Cubit<ProfileState> {
   final fbCtrler = TextEditingController();
   final zaloCtrler = TextEditingController();
   final genders = ['Nam', 'Nữ'];
-  var gender = "Nữ";
+
   getInfoUser() async {
     emit(ProfileLoadingState());
     final userId = injector.get<DataPrefs>().getUserId();
@@ -56,8 +56,6 @@ class ProfileBloc extends Cubit<ProfileState> {
     cityCtrler.text = user!.TinhThanhCongTac ?? '';
     fbCtrler.text = user!.facebook ?? '';
     zaloCtrler.text = user!.zalo ?? '';
-
-    // gender = user?.GioiTinh ?? 'Nam';
 
     await getProvices();
     emit(ProfileLoadDoneState(user!));
@@ -120,7 +118,7 @@ class ProfileBloc extends Cubit<ProfileState> {
 
   updateProfile() async {
     CommonUtils.showLoading();
-    emit(ProfileLoadingState());
+
     String urls = '';
     final userId = injector.get<DataPrefs>().getUserId();
     if (nameCtrler.text != user?.HoTen) {
@@ -171,7 +169,11 @@ class ProfileBloc extends Cubit<ProfileState> {
 
     final res = await injector.get<ApiClient>().updateInfoUser(
           userId,
-          encoded,
+          nameCtrler.text,
+          user?.GioiTinh ?? '',
+          user?.SoDienThoai ?? '',
+          user?.Email ?? '',
+          user?.TinhThanhCongTac ?? '',
           form,
         );
     print(res);

@@ -72,133 +72,135 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 onTap: () => Navigator.of(context).pushNamed(RouterName.login),
               ),
             )
-          : SingleChildScrollView(
-              child: BlocBuilder<ProfileBloc, ProfileState>(
-                buildWhen: (prev, curr) {
-                  return curr is ProfileLoadDoneState ||
-                      curr is ProfileLoadingState;
-                },
-                builder: (context, state) {
-                  if (state is ProfileLoadingState) {
-                    return CommonUtils.circleIndicator(context);
-                  }
-                  if (state is ProfileLoadDoneState) {
-                    return _buildListInfoView(state.user);
-                  }
-                  return _buildListInfoView(null);
-                },
-              ),
+          : BlocBuilder<ProfileBloc, ProfileState>(
+              buildWhen: (prev, curr) {
+                return curr is ProfileLoadDoneState ||
+                    curr is ProfileLoadingState;
+              },
+              builder: (context, state) {
+                if (state is ProfileLoadingState) {
+                  return Center(
+                    child: CommonUtils.circleIndicator(context),
+                  );
+                }
+                if (state is ProfileLoadDoneState) {
+                  return _buildListInfoView(state.user);
+                }
+                return _buildListInfoView(null);
+              },
             ),
     );
   }
 
   Widget _buildListInfoView(UserModel? user) {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(5),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: ColorConstant.grayEAB.withOpacity(0.24),
-              ),
-            ),
-            child: Container(
-              height: 100,
-              width: 100,
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(5),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: ColorConstant.grayEAB.withOpacity(0.24),
+                ),
               ),
-              child: Stack(
-                children: [
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    bottom: 0,
-                    left: 0,
-                    child: BlocBuilder<ProfileBloc, ProfileState>(
-                      buildWhen: (previous, current) =>
-                          current is ProfileSelectImageState,
-                      builder: (_, state) => InkWell(
-                        onTap: _modalBottomSheetMenu,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(50),
-                          child: _bloc.imageAvt != null
-                              ? Image.file(
-                                  _bloc.imageAvt!,
-                                  fit: BoxFit.cover,
-                                )
-                              : MyImage(
-                                  user?.AnhCaNhan ?? '',
-                                  fit: BoxFit.cover,
-                                ),
+              child: Container(
+                height: 100,
+                width: 100,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: Stack(
+                  children: [
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      bottom: 0,
+                      left: 0,
+                      child: BlocBuilder<ProfileBloc, ProfileState>(
+                        buildWhen: (previous, current) =>
+                            current is ProfileSelectImageState,
+                        builder: (_, state) => InkWell(
+                          onTap: _modalBottomSheetMenu,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(50),
+                            child: _bloc.imageAvt != null
+                                ? Image.file(
+                                    _bloc.imageAvt!,
+                                    fit: BoxFit.cover,
+                                  )
+                                : MyImage(
+                                    user?.AnhCaNhan ?? '',
+                                    fit: BoxFit.cover,
+                                  ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          MyTextFormField(
-            labelText: 'Họ tên',
-            controller: _bloc.nameCtrler,
-          ),
-          SizedBox(height: 10),
-          MyTextFormField(
-            labelText: 'Số điện thoại',
-            controller: _bloc.phoneCtrler,
-          ),
-          SizedBox(height: 10),
-          MyTextFormField(
-            labelText: 'Email',
-            controller: _bloc.emailCtrler,
-          ),
-          SizedBox(height: 10),
-          MyTextFieldDropdown(
-            labelText: 'Giới tính',
-            items: _bloc.genders,
-            value: _bloc.gender,
-            onChanged: (val) {
-              print(val);
-            },
-          ),
-          SizedBox(height: 10),
-          MyTextFormField(
-            labelText: 'Địa chỉ',
-            controller: _bloc.addressCtrler,
-          ),
-          SizedBox(height: 10),
-          MyTextFieldDropdown(
-            items: DataPrefsConstant.provinces
-                .map((e) => e.TenTinhThanh ?? '')
-                .toList(),
-            value: user?.tenTinhThanhCongTac ?? 'Chọn tỉnh thành',
-            onChanged: (val) {
-              print(val);
-            },
-          ),
-          SizedBox(height: 10),
-          MyTextFormField(
-            labelText: 'Facebook',
-            controller: _bloc.fbCtrler,
-          ),
-          SizedBox(height: 10),
-          MyTextFormField(
-            labelText: 'Zalo',
-            controller: _bloc.zaloCtrler,
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          _buildLogoutBtn()
-        ],
+            SizedBox(
+              height: 20,
+            ),
+            MyTextFormField(
+              labelText: 'Họ tên',
+              controller: _bloc.nameCtrler,
+            ),
+            SizedBox(height: 16),
+            MyTextFormField(
+              labelText: 'Số điện thoại',
+              controller: _bloc.phoneCtrler,
+            ),
+            SizedBox(height: 16),
+            MyTextFormField(
+              labelText: 'Email',
+              controller: _bloc.emailCtrler,
+            ),
+            SizedBox(height: 16),
+            MyTextFieldDropdown(
+              labelText: 'Giới tính',
+              items: _bloc.genders,
+              value: user?.GioiTinh == '0' ? 'Nam' : 'Nữ',
+              onChanged: (val) {
+                print(val);
+              },
+            ),
+            SizedBox(height: 16),
+            MyTextFormField(
+              labelText: 'Địa chỉ',
+              controller: _bloc.addressCtrler,
+            ),
+            SizedBox(height: 16),
+            MyTextFieldDropdown(
+              items: DataPrefsConstant.provinces
+                  .map((e) => e.TenTinhThanh ?? '')
+                  .toList(),
+              value: user?.tenTinhThanhCongTac ?? 'Chọn tỉnh thành',
+              onChanged: (val) {
+                print(val);
+              },
+            ),
+            SizedBox(height: 16),
+            MyTextFormField(
+              labelText: 'Facebook',
+              controller: _bloc.fbCtrler,
+            ),
+            SizedBox(height: 16),
+            MyTextFormField(
+              labelText: 'Zalo',
+              controller: _bloc.zaloCtrler,
+            ),
+            SizedBox(
+              height: 24,
+            ),
+            _buildLogoutBtn()
+          ],
+        ),
       ),
     );
   }
