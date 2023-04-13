@@ -29,7 +29,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _bloc.getInfoUser();
+      _bloc.getProvices();
     });
   }
 
@@ -50,7 +50,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       if (_bloc.user == null) {
                         return;
                       }
-                      _bloc.updateProfile();
+                      _bloc.updateProfile(context);
                     },
                     child: Center(
                       child: Text(
@@ -181,9 +181,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   .map((e) => e.TenTinhThanh ?? '')
                   .toList(),
               value: user?.tenTinhThanhCongTac ?? 'Chọn tỉnh thành',
-              onChanged: (val) {
-                print(val);
-              },
+              onChanged: (val) => _bloc.onChangedProvince(val!),
+            ),
+            SizedBox(height: 16),
+            MyTextFieldDropdown(
+              items:
+                  _bloc.listDistricts.map((e) => e.TenQuanHuyen ?? '').toList(),
+              value: user?.tenQuanHuyen ?? 'Chọn quận huyện',
+              onChanged: (val) => _bloc.onChangedDistrict(val!),
             ),
             SizedBox(height: 16),
             MyTextFormField(

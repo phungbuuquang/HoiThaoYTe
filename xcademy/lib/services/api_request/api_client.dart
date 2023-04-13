@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 import 'package:xcademy/models/base/update_base_response.dart';
+import 'package:xcademy/models/district/district_response.dart';
 import 'package:xcademy/models/login/login_response.dart';
 import 'package:xcademy/models/province/province_response.dart';
 import 'package:xcademy/models/seminar/seminar_response.dart';
@@ -39,12 +40,7 @@ abstract class ApiClient {
   @POST(Apis.update_info_user)
   @MultiPart()
   Future<UpdateBaseResponse?> updateInfoUser(
-    @Query('idHoiVien') String idUser,
-    @Query('HoTen') String fullName,
-    @Query('GioiTinh') String gender,
-    @Query('SoDienThoai') String phone,
-    @Query('Email') String email,
-    @Query('TinhThanhCongTac') String province,
+    @Queries() Map<String, dynamic> queries,
     @Body() FormData? formData,
   );
   @POST(Apis.register)
@@ -60,6 +56,9 @@ abstract class ApiClient {
 
   @GET('${Apis.provinces}')
   Future<ProvinceResponse?> getProvinces();
+  @GET(Apis.districts)
+  Future<DistrictResponse?> getDistrict(
+      @Query('idTinhThanh') String idProvince);
 
   @GET('${Apis.info_user}?idHoiVien={userId}')
   Future<UserResponse?> getInfoUser(

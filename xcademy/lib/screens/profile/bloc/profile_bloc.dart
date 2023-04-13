@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:xcademy/configurations/configurations.dart';
+import 'package:xcademy/models/district/district_response.dart';
 import 'package:xcademy/models/province/province_response.dart';
 import 'package:xcademy/models/user/user_model.dart';
 import 'package:xcademy/services/api_request/api_client.dart';
@@ -37,6 +39,13 @@ class ProfileBloc extends Cubit<ProfileState> {
   final fbCtrler = TextEditingController();
   final zaloCtrler = TextEditingController();
   final genders = ['Nam', 'Nữ'];
+  var gender = 'Nam';
+  List<DistrictModel> listDistricts = [
+    DistrictModel(
+      idQuanHuyen: '',
+      TenQuanHuyen: 'Chọn quận huyện',
+    )
+  ];
 
   getInfoUser() async {
     emit(ProfileLoadingState());
@@ -56,14 +65,70 @@ class ProfileBloc extends Cubit<ProfileState> {
     cityCtrler.text = user!.TinhThanhCongTac ?? '';
     fbCtrler.text = user!.facebook ?? '';
     zaloCtrler.text = user!.zalo ?? '';
-
-    await getProvices();
+    if (DataPrefsConstant.provinces.isNotEmpty) {
+      for (var i = 0; i < DataPrefsConstant.provinces.length; i++) {
+        if (DataPrefsConstant.provinces[i].idTinhThanh ==
+            (user?.TinhThanhCongTac ?? '')) {
+          user?.tenTinhThanhCongTac =
+              DataPrefsConstant.provinces[i].TenTinhThanh;
+          province = DataPrefsConstant.provinces[i];
+          break;
+        }
+      }
+      if (user?.TinhThanhCongTac != '999') {
+        await getDistricts();
+      }
+    }
     emit(ProfileLoadDoneState(user!));
+  }
+
+  getDistricts() async {
+    final res = await injector
+        .get<ApiClient>()
+        .getDistrict(province?.idTinhThanh ?? '');
+    if (res != null && res.data != null) {
+      listDistricts = [
+        DistrictModel(
+          idQuanHuyen: '',
+          TenQuanHuyen: 'Chọn quận huyện',
+        )
+      ];
+      listDistricts.addAll(res.data!);
+      if (listDistricts.isNotEmpty) {
+        for (var i = 0; i < listDistricts.length; i++) {
+          if (listDistricts[i].idQuanHuyen == (user?.QuanHuyen ?? '')) {
+            user?.tenQuanHuyen = listDistricts[i].TenQuanHuyen;
+
+            break;
+          }
+        }
+      }
+    }
   }
 
   resetData() {
     birthday = null;
     imageTNCK = null;
+  }
+
+  onChangedProvince(String val) {
+    if (val != province?.TenTinhThanh) {
+      province =
+          DataPrefsConstant.provinces.where((e) => e.TenTinhThanh == val).first;
+      user?.TinhThanhCongTac = province?.TenTinhThanh;
+      user?.tenTinhThanhCongTac = province?.TenTinhThanh;
+      if (province?.idTinhThanh != '999') {
+        getDistricts();
+      }
+    }
+  }
+
+  onChangedDistrict(String val) {
+    if (val != user?.QuanHuyen) {
+      final district = listDistricts.where((e) => e.TenQuanHuyen == val).first;
+      user?.QuanHuyen = district.TenQuanHuyen;
+      user?.tenQuanHuyen = district.TenQuanHuyen;
+    }
   }
 
   selectDate(DateTime date) {
@@ -85,7 +150,6 @@ class ProfileBloc extends Cubit<ProfileState> {
   getProvices() async {
     final res = await injector.get<ApiClient>().getProvinces();
     if (res != null && res.data != null) {
-      final provinces = res.data!;
       listProvinces = res.data!;
       DataPrefsConstant.provinces = [
         ProvinceModel(
@@ -93,16 +157,8 @@ class ProfileBloc extends Cubit<ProfileState> {
           TenTinhThanh: 'Chọn tỉnh thành',
         )
       ];
-
+      getInfoUser();
       DataPrefsConstant.provinces.addAll(res.data!);
-
-      for (var i = 0; i < provinces.length; i++) {
-        if (provinces[i].idTinhThanh == (user?.TinhThanhCongTac ?? '')) {
-          user?.tenTinhThanhCongTac = provinces[i].TenTinhThanh;
-          province = provinces[i];
-          return;
-        }
-      }
     }
   }
 
@@ -116,24 +172,9 @@ class ProfileBloc extends Cubit<ProfileState> {
     emit(ProfileSelectProvinceState());
   }
 
-  updateProfile() async {
+  updateProfile(BuildContext context) async {
     CommonUtils.showLoading();
 
-    String urls = '';
-    final userId = injector.get<DataPrefs>().getUserId();
-    if (nameCtrler.text != user?.HoTen) {
-      urls += '&HoTen=${nameCtrler.text}';
-    }
-    if (phoneCtrler.text != user?.SoDienThoai) {
-      urls += '&SoDienThoai=${phoneCtrler.text}';
-    }
-    if (emailCtrler.text != user?.Email) {
-      urls += '&Email=${emailCtrler.text}&';
-    }
-    if (addressCtrler.text != user?.DiaChi) {
-      urls += '&DiaChi=${addressCtrler.text}&';
-    }
-    var encoded = Uri.encodeFull(urls);
     // if (birthday != null) {
     //   urls +=
     //       'NgaySinh=${DateUtil.dateToStr(birthday!, format: 'MM/dd/yyyy')}&';
@@ -157,23 +198,32 @@ class ProfileBloc extends Cubit<ProfileState> {
     //   urls += 'TinhThanhCongTac=${province?.idTinhThanh}&';
     // }
     FormData? form;
-    // if (imageAvt != null) {
-    //   form = FormData.fromMap({
-    //     'fileimg': MultipartFile.fromFileSync(
-    //       imageAvt?.path ?? '',
-    //       contentType:
-    //           MediaType.parse(lookupMimeType(imageAvt?.path ?? '') ?? ''),
-    //     ),
-    //   });
-    // }
-
+    if (imageAvt != null) {
+      form = FormData.fromMap({
+        'AnhCaNhan': MultipartFile.fromFileSync(
+          imageAvt?.path ?? '',
+          contentType:
+              MediaType.parse(lookupMimeType(imageAvt?.path ?? '') ?? ''),
+        ),
+      });
+    }
+    final queries = {
+      "idHoiVien": DataPrefsConstant.userId,
+      "HoTen": nameCtrler.text,
+      "GioiTinh": gender == 'Nam' ? '0' : '1',
+      "NamSinh": '',
+      'SoDienThoai': phoneCtrler.text,
+      'Email': emailCtrler.text,
+      'DiaChi': addressCtrler.text,
+      'ThongTinThem': '',
+      'TinhThanhCongTac': user?.TinhThanhCongTac,
+      'QuanHuyen': '',
+      'MatKhau': user?.MatKhau,
+      'facebook': fbCtrler.text,
+      'zalo': zaloCtrler.text,
+    };
     final res = await injector.get<ApiClient>().updateInfoUser(
-          userId,
-          nameCtrler.text,
-          user?.GioiTinh ?? '',
-          user?.SoDienThoai ?? '',
-          user?.Email ?? '',
-          user?.TinhThanhCongTac ?? '',
+          queries,
           form,
         );
     print(res);
@@ -181,7 +231,9 @@ class ProfileBloc extends Cubit<ProfileState> {
     if (res != null && res.data?.first != null) {
       if (res.data?.first.result?.replaceAll(' ', '') == 'success') {
         getInfoUser();
-        emit(ProfileUpdateDoneState(null));
+        CommonUtils.showOkDialog(context,
+            msg: 'Cập nhật thông tin thành công!');
+        // emit(ProfileUpdateDoneState(null));
         return;
       }
     }

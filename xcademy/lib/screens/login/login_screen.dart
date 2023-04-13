@@ -45,12 +45,14 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
       listener: (_, state) {
-        if (state is LoginFailedState) {
-          CommonUtils.showOkDialog(context, msg: state.error);
-        }
-        if (state is LoginSuccessState) {
-          Navigator.of(context).pushReplacementNamed(RouterName.base_tabbar);
-        }
+        state.maybeWhen(
+          orElse: () {},
+          error: (err) {
+            CommonUtils.showOkDialog(context, msg: err);
+          },
+          success: (val) => Navigator.of(context)
+              .pushReplacementNamed(RouterName.base_tabbar),
+        );
       },
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -196,9 +198,9 @@ class _LoginScreenState extends State<LoginScreen> {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (_, state) {
         bool isLoading = false;
-        if (state is LoginLoadingState) {
-          isLoading = true;
-        }
+        // if (state is LoginLoadingState) {
+        //   isLoading = true;
+        // }
         return MyButton(
           isLoading: isLoading,
           onTap: loginTapped,

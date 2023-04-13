@@ -9,7 +9,6 @@ import 'package:xcademy/screens/lession/subject_screen.dart';
 import 'package:xcademy/screens/list_notification.dart/list_notification_screen.dart';
 import 'package:xcademy/screens/login/bloc/login_bloc.dart';
 import 'package:xcademy/screens/login/login_screen.dart';
-import 'package:xcademy/screens/profile/edit_profile_screen.dart';
 import 'package:xcademy/screens/signup/bloc/signup_bloc.dart';
 import 'package:xcademy/screens/signup/signup_screen.dart';
 import 'package:xcademy/screens/tabbar/base_tabbar_screen.dart';
@@ -49,8 +48,7 @@ class RouterManager {
             child: SignupScreen(),
           ),
         );
-      case RouterName.edit_profile:
-        return MaterialPageRoute(builder: (_) => EditProfileScreen());
+
       case RouterName.list_notification:
         return MaterialPageRoute(builder: (_) => ListNotificationScreen());
       default:

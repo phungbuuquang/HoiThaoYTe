@@ -25,8 +25,12 @@ class UserModel {
   String? AnhVanBangCaoNhat;
   String? facebook;
   String? zalo;
-  @JsonKey(ignore: true)
+  String? MatKhau;
+  String? QuanHuyen;
+  @JsonKey(includeFromJson: false)
   String? tenTinhThanhCongTac;
+  @JsonKey(includeFromJson: false)
+  String? tenQuanHuyen;
 
   UserModel();
   factory UserModel.fromJson(Map<String, dynamic> json) =>

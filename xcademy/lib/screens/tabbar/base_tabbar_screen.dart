@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:xcademy/resources/color_constant.dart';
 import 'package:xcademy/screens/home/bloc/home_bloc.dart';
 import 'package:xcademy/screens/home/home_screen.dart';
-import 'package:xcademy/screens/profile/bloc/profile_bloc.dart';
 
 import 'package:xcademy/screens/profile/profile_screen.dart';
 import 'package:xcademy/widgets/my_image.dart';

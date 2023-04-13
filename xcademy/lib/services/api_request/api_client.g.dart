@@ -107,23 +107,12 @@ class _ApiClient implements ApiClient {
 
   @override
   Future<UpdateBaseResponse?> updateInfoUser(
-    idUser,
-    fullName,
-    gender,
-    phone,
-    email,
-    province,
+    queries,
     formData,
   ) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'idHoiVien': idUser,
-      r'HoTen': fullName,
-      r'GioiTinh': gender,
-      r'SoDienThoai': phone,
-      r'Email': email,
-      r'TinhThanhCongTac': province,
-    };
+    final queryParameters = <String, dynamic>{};
+    queryParameters.addAll(queries);
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = formData;
@@ -209,6 +198,30 @@ class _ApiClient implements ApiClient {
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value =
         _result.data == null ? null : ProvinceResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<DistrictResponse?> getDistrict(idProvince) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'idTinhThanh': idProvince};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio
+        .fetch<Map<String, dynamic>?>(_setStreamType<DistrictResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'getquanhuyen',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value =
+        _result.data == null ? null : DistrictResponse.fromJson(_result.data!);
     return value;
   }
 
